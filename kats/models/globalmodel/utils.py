@@ -432,16 +432,20 @@ class DilatedRNNStack(torch.nn.Module):
                 if cell_name == "LSTM2Cell":
                     if jit:
                         cell = torch.jit.script(
+                            # pyrefly: ignore [bad-argument-type]
                             LSTM2Cell(tmp_input_size, h_size, state_size)
                         )
                     else:
+                        # pyrefly: ignore [bad-argument-type]
                         cell = LSTM2Cell(tmp_input_size, h_size, state_size)
                 elif cell_name == "S2Cell":
                     if jit:
                         cell = torch.jit.script(
+                            # pyrefly: ignore [bad-argument-type]
                             S2Cell(tmp_input_size, h_size, state_size)
                         )
                     else:
+                        # pyrefly: ignore [bad-argument-type]
                         cell = S2Cell(tmp_input_size, h_size, state_size)
                 else:
                     cell = torch.nn.LSTMCell(tmp_input_size, state_size)
@@ -452,6 +456,7 @@ class DilatedRNNStack(torch.nn.Module):
             # pyre-fixme[4]: Attribute must be annotated.
             self.adaptor = torch.nn.Linear(out_size, output_size)
         elif output_size is None:
+            # pyrefly: ignore [bad-assignment]
             self.adaptor = None
         else:
             msg = f"output_size should be either None (for encoder) or a positive integer, but receives {output_size}."
@@ -725,6 +730,7 @@ class PinballLoss(_Loss):
         nans = nans.repeat(1, m)
 
         quants = self.quantile.repeat(horizon, 1).t().flatten()
+        # pyrefly: ignore [not-callable]
         weights = self.weight.repeat(horizon, 1).t().flatten()
 
         diff = target - input
@@ -859,6 +865,7 @@ class AdjustedPinballLoss(_Loss):
 
             res = torch.cat([res, res_q], dim=1)
 
+        # pyrefly: ignore [not-callable]
         weights = self.weight.repeat(horizon, 1).t().flatten()
         res = res * weights
         res = res.view(n, -1, horizon).sum(dim=2) / num_not_nan[:, None]
@@ -1304,6 +1311,7 @@ class GMParam:
                         msg = f"Invalid metric_name {name}!"
                         logging.error(msg)
                         raise ValueError(msg)
+                # pyrefly: ignore [bad-assignment]
                 self.validation_metric = validation_metric
             else:
                 msg = f"validation_metric should be a list of str, but receives {type(validation_metric)}."

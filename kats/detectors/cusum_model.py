@@ -249,6 +249,7 @@ class CUSUMDetectorModel(DetectorModel):
             self.pre_mean = 0
             self.pre_std = 1
             self.number_of_normal_scan = 0
+            # pyrefly: ignore [bad-assignment]
             self.alert_change_direction: Union[str, None] = None
             self.scan_window = scan_window
             self.historical_window = historical_window
@@ -273,6 +274,7 @@ class CUSUMDetectorModel(DetectorModel):
                     score_func = STR_TO_SCORE_FUNC[score_func]
                 else:
                     score_func = DEFAULT_SCORE_FUNCTION
+            # pyrefly: ignore [bad-assignment]
             self.score_func = score_func.value
 
             self.vectorized: bool = vectorized or False
@@ -518,6 +520,7 @@ class CUSUMDetectorModel(DetectorModel):
                 data_pre = data[: cp_index + 1]
                 score_pre = self._zeros_ts(data_pre)
                 change_pre = self._zeros_ts(data_pre)
+                # pyrefly: ignore [bad-index]
                 score_post = SCORE_FUNC_DICT[score_func](
                     data=data[cp_index + 1 :],
                     pre_mean=self.pre_mean,
@@ -533,6 +536,7 @@ class CUSUMDetectorModel(DetectorModel):
                 change_pre.extend(change_post, validate=False)
                 return PredictFunctionValues(score_pre, change_pre)
             return PredictFunctionValues(
+                # pyrefly: ignore [bad-index]
                 SCORE_FUNC_DICT[score_func](
                     data=data, pre_mean=self.pre_mean, pre_std=self.pre_std
                 ),
@@ -656,6 +660,7 @@ class CUSUMDetectorModel(DetectorModel):
 
         # check if historical_window, scan_window, and step_window are suitable for given TSs
         frequency_sec = frequency.total_seconds()
+        # pyrefly: ignore [bad-argument-type]
         self._check_window_sizes(frequency_sec)
 
         if remove_seasonality:
@@ -722,6 +727,7 @@ class CUSUMDetectorModel(DetectorModel):
             # if step window is not provide use the time range of data or
             # half of the scan_window.
             step_window = min(
+                # pyrefly: ignore [unsupported-operation]
                 scan_window / 2,
                 (data.time.iloc[-1] - data.time.iloc[0])
                 + frequency,  # to include the last data point
@@ -739,6 +745,7 @@ class CUSUMDetectorModel(DetectorModel):
 
         multi_ts_len = int(
             np.ceil(
+                # pyrefly: ignore [missing-attribute]
                 (historical_window.total_seconds() + step_window.total_seconds())
                 / frequency_sec
             )
@@ -750,6 +757,7 @@ class CUSUMDetectorModel(DetectorModel):
 
         if self.vectorized:
             if (
+                # pyrefly: ignore [missing-attribute]
                 step_window.total_seconds() % frequency_sec == 0
                 and historical_window.total_seconds() % frequency_sec
                 == 0  # otherwise in the loop around row 715, each iteration might have slightly different data length
@@ -841,6 +849,7 @@ class CUSUMDetectorModel(DetectorModel):
                     vec_data_row=in_data,
                     scan_window=cast(Union[int, pd.Timedelta], scan_window),
                     changepoints=ss_detect.cps_meta[c],
+                    # pyrefly: ignore [bad-argument-type, unsupported-operation]
                     time_adjust=pd.Timedelta(c * step_window, "s"),
                     change_directions=change_directions,
                     delta_std_ratio=delta_std_ratio,
@@ -857,6 +866,7 @@ class CUSUMDetectorModel(DetectorModel):
             score_tsd_vec, change_tsd_vec = self._reorganize_back(
                 predict_results.score,
                 predict_results.absolute_change,
+                # pyrefly: ignore [bad-argument-type]
                 historical_data.value.name,
                 freq_historical=frequency,
             )
@@ -1113,14 +1123,20 @@ class VectorizedCUSUMDetectorModel(CUSUMDetectorModel):
     ) -> None:
         if serialized_model:
             previous_model = json.loads(serialized_model)
+            # pyrefly: ignore [bad-override]
             self.cps: List[List[int]] = previous_model["cps"]
             self.cps_meta: List[List[CUSUMChangePoint]] = previous_model["cps_meta"]
+            # pyrefly: ignore [bad-override]
             self.alert_fired: pd.Series = previous_model["alert_fired"]
+            # pyrefly: ignore [bad-override]
             self.pre_mean: pd.Series = previous_model["pre_mean"]
+            # pyrefly: ignore [bad-override]
             self.pre_std: pd.Series = previous_model["pre_std"]
+            # pyrefly: ignore [bad-override]
             self.number_of_normal_scan: pd.Series = previous_model[
                 "number_of_normal_scan"
             ]
+            # pyrefly: ignore [bad-override]
             self.alert_change_direction: pd.Series = previous_model[
                 "alert_change_direction"
             ]
@@ -1144,6 +1160,7 @@ class VectorizedCUSUMDetectorModel(CUSUMDetectorModel):
             else:
                 self.remove_seasonality: bool = remove_seasonality
 
+            # pyrefly: ignore [bad-override]
             self.season_period_freq: str = previous_model.get(
                 "season_period_freq", "daily"
             )
@@ -1180,6 +1197,7 @@ class VectorizedCUSUMDetectorModel(CUSUMDetectorModel):
                     score_func = STR_TO_SCORE_FUNC[score_func]
                 else:
                     score_func = DEFAULT_SCORE_FUNCTION
+            # pyrefly: ignore [bad-assignment]
             self.score_func: CusumScoreFunction = score_func.value
             self.adapted_pre_mean: bool = adapted_pre_mean or False
 
@@ -1421,6 +1439,7 @@ class VectorizedCUSUMDetectorModel(CUSUMDetectorModel):
             for x in change_time
         ]
         ret = PredictFunctionValues(
+            # pyrefly: ignore [bad-index]
             SCORE_FUNC_DICT[score_func](
                 data=data, pre_mean=self.pre_mean, pre_std=self.pre_std
             ),
@@ -1554,6 +1573,7 @@ class VectorizedCUSUMDetectorModel(CUSUMDetectorModel):
                 raise DataIrregularGranularityError(IRREGULAR_GRANULARITY_ERROR)
 
         # check if historical_window, scan_window, and step_window are suitable for given TSs
+        # pyrefly: ignore [bad-argument-type]
         self._check_window_sizes(frequency.total_seconds())
 
         if remove_seasonality:
@@ -1620,6 +1640,7 @@ class VectorizedCUSUMDetectorModel(CUSUMDetectorModel):
             # if step window is not provide use the time range of data or
             # half of the scan_window.
             step_window = min(
+                # pyrefly: ignore [unsupported-operation]
                 scan_window / 2,
                 (data.time.iloc[-1] - data.time.iloc[0])
                 + frequency,  # to include the last data point

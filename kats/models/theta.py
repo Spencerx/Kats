@@ -26,6 +26,8 @@ from kats.consts import Params, TimeSeriesData
 from kats.models.model import Model
 from kats.utils.decomposition import TimeSeriesDecomposition
 from kats.utils.parameter_tuning_utils import get_default_theta_parameter_search_space
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import norm  # @manual
 from statsmodels.tsa.holtwinters import HoltWintersResults, SimpleExpSmoothing
 from statsmodels.tsa.stattools import acf
@@ -84,6 +86,7 @@ class ThetaModel(Model[ThetaParams]):
         params: ThetaParams,
     ) -> None:
         super().__init__(data, params)
+        # pyrefly: ignore [bad-override]
         self.data: TimeSeriesData = data
         self.__subtype__ = "theta"
         if not isinstance(self.data.value, pd.Series):

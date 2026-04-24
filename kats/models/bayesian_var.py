@@ -86,6 +86,7 @@ class BayesianVAR(m.Model[BayesianVARParams]):
     resid: Optional[pd.DataFrame] = None
     forecast: Optional[Dict[str, TimeSeriesData]] = None
     forecast_max_time: Optional[datetime] = None
+    # pyrefly: ignore [bad-override]
     data: TimeSeriesData
     time_freq: str
     X: npt.NDArray
@@ -492,6 +493,7 @@ class BayesianVAR(m.Model[BayesianVARParams]):
                 figsize = (20, 6)
             _, ax = plt.subplots(figsize=figsize)
 
+        # pyrefly: ignore [bad-argument-type]
         ax.set_title(title)
 
         for i, c in enumerate(data.value.columns):

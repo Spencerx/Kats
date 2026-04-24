@@ -40,7 +40,9 @@ class Model(Generic[ParamsType]):
         validate_dimension: bool = False,
     ) -> None:
         self.data = data
+        # pyrefly: ignore [missing-attribute]
         self.params = params
+        # pyrefly: ignore [missing-attribute]
         self.__type__ = "model"
         if data is not None:
             data.validate_data(validate_frequency, validate_dimension)

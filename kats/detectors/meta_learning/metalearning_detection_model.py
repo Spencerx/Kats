@@ -37,6 +37,7 @@ def get_ts_features(ts: TimeSeriesData) -> Dict[str, float]:
             feature_val = format(feature_val, ".4f")
         features[feature_name] = feature_val
 
+    # pyrefly: ignore [bad-return]
     return features
 
 

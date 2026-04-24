@@ -160,6 +160,7 @@ class MultivariateVARDetectorTest(TestCase):
         ]
     )
     def test_detector_count_equal(self, attribute: str) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
 
         d = attrgetter(attribute)(self)
@@ -177,6 +178,7 @@ class MultivariateVARDetectorTest(TestCase):
         ]
     )
     def test_detector_plot(self, attribute: str) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
 
         d = attrgetter(attribute)(self)
@@ -190,6 +192,7 @@ class MultivariateVARDetectorTest(TestCase):
         ]
     )
     def test_detector_get_anomalous_metrics(self, attribute: str) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
 
         d = attrgetter(attribute)(self)

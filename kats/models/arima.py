@@ -208,9 +208,11 @@ class ARIMAModel(Model[ARIMAParams]):
             raise ValueError("Trend must be one of 'n', 'c', 't', or 'ct'")
 
         arima = ARIMA(
+            # pyrefly: ignore [missing-attribute]
             self.data.value,
             order=(self.params.p, self.params.d, self.params.q),
             exog=self.params.exog,
+            # pyrefly: ignore [missing-attribute]
             dates=self.data.time,
             freq=self.params.freq,
         )
@@ -255,6 +257,7 @@ class ARIMAModel(Model[ARIMAParams]):
 
         self.fcst_exog = exog
         self.alpha = alpha
+        # pyrefly: ignore [missing-attribute]
         self.freq = kwargs.get("freq", pd.infer_freq(self.data.time))
 
         fcst = model.get_forecast(
@@ -270,6 +273,7 @@ class ARIMAModel(Model[ARIMAParams]):
         self.y_fcst_lower = lower
         self.y_fcst_upper = upper
 
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=self.freq)
 
@@ -288,8 +292,10 @@ class ARIMAModel(Model[ARIMAParams]):
         self.include_history = include_history
         if self.include_history:
             try:
+                # pyrefly: ignore [missing-attribute]
                 t_pred = self.data.time[self.params.d :]
                 hist_fcst = (
+                    # pyrefly: ignore [bad-argument-type]
                     model.predict(start=self.params.d, end=len(self.data))
                     .rename("fcst")
                     .to_frame()

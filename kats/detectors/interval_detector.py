@@ -54,6 +54,8 @@ from kats.detectors.detector import DetectorModel
 from kats.detectors.detector_consts import AnomalyResponse, ConfidenceBand
 from matplotlib import pyplot as plt
 from scipy.linalg import toeplitz
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import beta, binom, multivariate_normal, norm
 from statsmodels.tsa.arima_process import ArmaProcess
 
@@ -537,6 +539,7 @@ class IntervalDetectorModel(DetectorModel, ABC):
 
     @property
     def json(self) -> Dict[str, str]:
+        # pyrefly: ignore [bad-return]
         return {
             **{
                 "alpha": self.alpha,
@@ -950,11 +953,13 @@ class IntervalDetectorModel(DetectorModel, ABC):
         result = multivariate_normal.cdf(
             x=upper,
             mean=mean,
+            # pyrefly: ignore [bad-argument-type]
             cov=cov,
             allow_singular=allow_singular,
             maxpts=maxpts if maxpts else 1_000_000 * dim,
             abseps=abseps,
             releps=releps,
+            # pyrefly: ignore [unexpected-keyword]
             lower_limit=lower,
         )
         return float(result)
@@ -1301,15 +1306,19 @@ class IntervalDetectorModel(DetectorModel, ABC):
         _, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
         # X-axis
+        # pyrefly: ignore [missing-attribute]
         x_axis = (data.time - data.time.min()) / np.timedelta64(1, interval_units)
 
         # Abstract plot for values and uncertainty.
+        # pyrefly: ignore [bad-argument-type]
         self._plot(x_axis=x_axis, data=data, axis=ax1, alpha=ALPHA)
         ax1.set_ylabel("Values")
+        # pyrefly: ignore [missing-attribute]
         ax1.set_xlabel(f"Elapsed time ({interval_units}) from {data.time.min()}")
         ax1.legend()
 
         # Plot the test statistic and intervals
+        # pyrefly: ignore [missing-attribute]
         ax2.plot(x_axis, test_result.test_statistic, label="test statistic")
 
         # Define two helper functions to extract information from a ABInterval.
@@ -1361,6 +1370,7 @@ class IntervalDetectorModel(DetectorModel, ABC):
             ax2.fill_between(
                 x=get_grid(interval),
                 y1=get_values(critical_value, interval),
+                # pyrefly: ignore [missing-attribute]
                 y2=get_values(test_result.test_statistic, interval),
                 alpha=ALPHA,
                 color="green",
@@ -1372,6 +1382,7 @@ class IntervalDetectorModel(DetectorModel, ABC):
             ax2.fill_between(
                 x=get_grid(interval),
                 y1=get_values(critical_value, interval),
+                # pyrefly: ignore [missing-attribute]
                 y2=get_values(test_result.test_statistic, interval),
                 alpha=ALPHA,
                 color="yellow",
@@ -1383,12 +1394,14 @@ class IntervalDetectorModel(DetectorModel, ABC):
             ax2.fill_between(
                 x=get_grid(interval),
                 y1=get_values(critical_value, interval),
+                # pyrefly: ignore [missing-attribute]
                 y2=get_values(test_result.test_statistic, interval),
                 alpha=ALPHA,
                 color="red",
                 label="Reject >= Duration" if i == 0 else None,
             )
         ax2.set_ylabel("Test Statistic")
+        # pyrefly: ignore [missing-attribute]
         ax2.set_xlabel(f"Elapsed time ({interval_units}) from {data.time.min()}")
         ax2.title.set_text(f"Test Statistic w/ duration: {self.duration}")
         ax2.legend()

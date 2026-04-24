@@ -267,6 +267,7 @@ class testEmpConfidenceInt(TestCase):
         self.params = params
         self.unfit_ci = EmpConfidenceInt(
             ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             self.TSData,
             params,
             50,
@@ -277,6 +278,7 @@ class testEmpConfidenceInt(TestCase):
         )
         self.ci = EmpConfidenceInt(
             ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             self.TSData,
             params,
             50,
@@ -287,6 +289,7 @@ class testEmpConfidenceInt(TestCase):
         )
         ci_plot = EmpConfidenceInt(
             ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             self.TSData,
             params,
             50,
@@ -327,6 +330,7 @@ class testEmpConfidenceInt(TestCase):
                 with self.assertRaises(ValueError):
                     _ = EmpConfidenceInt(
                         ALL_ERRORS,
+                        # pyrefly: ignore [bad-argument-type]
                         self.TSData,
                         self.params,
                         train_pct,
@@ -373,11 +377,17 @@ class testEmpConfidenceInt(TestCase):
                 legend = kwargs.get("legend", defaults["legend"])
                 ax = self.ci_plot.diagnose(
                     ax=ax,
+                    # pyrefly: ignore [bad-argument-type]
                     figsize=figsize,
+                    # pyrefly: ignore [bad-argument-type]
                     linecolor=linecolor,
+                    # pyrefly: ignore [bad-argument-type]
                     linelabel=linelabel,
+                    # pyrefly: ignore [bad-argument-type]
                     secolor=secolor,
+                    # pyrefly: ignore [bad-argument-type]
                     selabel=selabel,
+                    # pyrefly: ignore [bad-argument-type]
                     legend=legend,
                 )
                 self.assertIsNotNone(ax)
@@ -422,13 +432,21 @@ class testEmpConfidenceInt(TestCase):
                 grid = kwargs.get("grid", defaults["grid"])
                 ax = self.ci_plot.plot(
                     ax=ax,
+                    # pyrefly: ignore [bad-argument-type]
                     figsize=figsize,
+                    # pyrefly: ignore [bad-argument-type]
                     linecolor=linecolor,
+                    # pyrefly: ignore [bad-argument-type]
                     fcstcolor=fcstcolor,
+                    # pyrefly: ignore [bad-argument-type]
                     intervalcolor=intervalcolor,
+                    # pyrefly: ignore [bad-argument-type]
                     intervalalpha=intervalalpha,
+                    # pyrefly: ignore [bad-argument-type]
                     modelcolor=modelcolor,
+                    # pyrefly: ignore [bad-argument-type]
                     modelalpha=modelalpha,
+                    # pyrefly: ignore [bad-argument-type]
                     grid=grid,
                 )
                 self.assertIsNotNone(ax)

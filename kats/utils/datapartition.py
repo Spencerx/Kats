@@ -113,6 +113,7 @@ class DataPartitionBase(ABC):
         for k in keys:
             # pyre-fixme
             if not isinstance(data[k], TimeSeriesData):
+                # pyrefly: ignore [bad-index]
                 info = f"The input data should be a single (or a list or a dictionary of) `TimeSeriesData` object, but receives {type(data[k])}."
                 _raise_error(info)
         # pyre-fixme
@@ -157,6 +158,7 @@ class DataPartitionBase(ABC):
             if return_list:
                 tmp_train = [tmp_train[k] for k in keys]
                 tmp_test = [tmp_test[k] for k in keys]
+            # pyrefly: ignore [bad-argument-type]
             res.append(TrainTestData(train=tmp_train, test=tmp_test))
         return res
 
@@ -282,20 +284,27 @@ class SimpleTimestampDataPartition(DataPartitionBase):
         test_start: Timestamp,
         test_end: Optional[Timestamp],
     ) -> Tuple[pd.Timestamp, pd.Timestamp, pd.Timestamp, pd.Timestamp]:
+        # pyrefly: ignore [bad-assignment]
         train_end = pd.Timestamp(train_end)
+        # pyrefly: ignore [bad-assignment]
         test_start = pd.Timestamp(test_start)
 
         train_start = (
+            # pyrefly: ignore [bad-assignment]
             pd.Timestamp.min if train_start is None else pd.Timestamp(train_start)
         )
+        # pyrefly: ignore [bad-assignment]
         test_end = pd.Timestamp.max if test_end is None else pd.Timestamp(test_end)
 
+        # pyrefly: ignore [unsupported-operation]
         if train_end <= train_start:
             msg = "`train_end` should be greater than `train_start`."
             _raise_error(msg)
+        # pyrefly: ignore [unsupported-operation]
         if test_end <= test_start:
             msg = "`test_end` should be greater than `test_start`."
             _raise_error(msg)
+        # pyrefly: ignore [bad-return]
         return train_start, train_end, test_start, test_end
 
     def _single_train_test_split(

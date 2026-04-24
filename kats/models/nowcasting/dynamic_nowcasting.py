@@ -143,6 +143,7 @@ class NowcastingModel(m.Model):
 
         # filterout + - inf, nan
         self.df_poly = self.df_poly[
+            # pyrefly: ignore [bad-argument-count]
             ~self.df_poly.isin([np.nan, np.inf, -np.inf]).any(1)
         ]
 
@@ -179,6 +180,7 @@ class NowcastingModel(m.Model):
                 self.df = LAG(self.df, n)
                 feature_names.append("LAG_" + str(n))
             self.df = self.df[
+                # pyrefly: ignore [bad-argument-count]
                 ~self.df.isin([np.nan, np.inf, -np.inf]).any(1)
             ]  # filterout + - inf, nan
             self.feature_names = feature_names
@@ -197,6 +199,7 @@ class NowcastingModel(m.Model):
                 self.df = MA(self.df, n)
                 feature_names.append("MA_" + str(n))
             self.df = self.df[
+                # pyrefly: ignore [bad-argument-count]
                 ~self.df.isin([np.nan, np.inf, -np.inf]).any(1)
             ]  # filterout + - inf, nan
             self.feature_names = feature_names
@@ -218,6 +221,7 @@ class NowcastingModel(m.Model):
 
         if np.sum(self.df["y"].isin([0.0])) == 0:
             n = 1
+            # pyrefly: ignore [bad-argument-count]
             train_index = self.df[~self.df.isin([np.nan, np.inf, -np.inf]).any(1)].index
 
             X_train = self.df[self.feature_names].loc[train_index]
@@ -243,6 +247,7 @@ class NowcastingModel(m.Model):
 
         else:
             n = 1
+            # pyrefly: ignore [bad-argument-count]
             train_index = self.df[~self.df.isin([np.nan, np.inf, -np.inf]).any(1)].index
 
             X_train = self.df[self.feature_names].loc[train_index]

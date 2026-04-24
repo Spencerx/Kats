@@ -160,6 +160,7 @@ class BaseEnsemble(Model):
         predicted = {}
         for model_name, model_fitted in fitted.items():
             predicted[model_name] = model_fitted.predict(steps, **kwargs)
+        # pyrefly: ignore [bad-return]
         return predicted
 
     def __str__(self) -> str:

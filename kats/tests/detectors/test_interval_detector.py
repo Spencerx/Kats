@@ -27,6 +27,8 @@ from kats.detectors.interval_detector import (
     TwoSampleSchema,
 )
 from parameterized.parameterized import parameterized
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import multivariate_normal, norm
 
 

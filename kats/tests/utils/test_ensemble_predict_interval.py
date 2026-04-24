@@ -20,6 +20,7 @@ from kats.utils.ensemble_predict_interval import ensemble_predict_interval
 class testEnsemblePredictInterval(TestCase):
     def setUp(self) -> None:
         # create time series data
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(0)
         val = (
             np.arange(180) / 6

@@ -204,6 +204,7 @@ class DistributionDistanceModel(DetectorModel):
                 )
 
             self.distance_metric: str = distance_metric
+            # pyrefly: ignore [bad-assignment]
             self.jsd_base: float = max(2, jsd_base)
 
             if distance_metric == "jensenshannon":

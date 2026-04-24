@@ -354,18 +354,22 @@ class ProphetModelTest(TestCase):
         raw: Optional[bool],
         truth: pd.DataFrame,
     ) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(0)
         kwargs = {}
         if freq is not None:
             kwargs["freq"] = freq
         if future is not None:
+            # pyrefly: ignore [unsupported-operation]
             kwargs["future"] = future
         if raw is not None:
+            # pyrefly: ignore [unsupported-operation]
             kwargs["raw"] = raw
 
         params.validate_params()
         m = ProphetModel(data=ts, params=params)
         m.fit()
+        # pyrefly: ignore [bad-argument-type]
         forecast_df = m.predict(steps=steps, include_history=include_history, **kwargs)
         pandas.assert_frame_equal(
             truth, forecast_df, check_exact=False, atol=0.5, rtol=0.5

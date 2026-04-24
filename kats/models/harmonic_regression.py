@@ -46,6 +46,7 @@ class HarmonicRegressionModel(Model[Optional[np.ndarray]]):
     harms: Optional[npt.NDArray] = None
 
     def __init__(self, data: TimeSeriesData, params: HarmonicRegressionParams) -> None:
+        # pyrefly: ignore [bad-argument-type]
         super().__init__(data, params)
         # pyre-fixme[16]: `Optional` has no attribute `is_univariate`.
         if not self.data.is_univariate():
@@ -121,6 +122,7 @@ class HarmonicRegressionModel(Model[Optional[np.ndarray]]):
                 figsize = (20, 6)
             _, ax = plt.subplots(figsize=figsize)
 
+        # pyrefly: ignore [bad-argument-type]
         ax.set_title(title)
         ax.set_xlabel("Time")
         ax.set_ylabel("Value")
@@ -128,6 +130,7 @@ class HarmonicRegressionModel(Model[Optional[np.ndarray]]):
         # pyre-fixme[16]: `Optional` has no attribute `time`.
         # pyre-fixme[16]: `Optional` has no attribute `value`.
         (line1,) = ax.plot(self.data.time, self.data.value, label="Original signal")
+        # pyrefly: ignore [missing-attribute]
         (line2,) = ax.plot(self.data.time, fitted_harmonics, label="Fitted harmonics")
         ax.legend(handles=[line1, line2])
 

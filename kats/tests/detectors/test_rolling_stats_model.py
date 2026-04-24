@@ -28,6 +28,7 @@ def generate_ts_data(
     date_start_str: str = "2020-01-01 00:00:00",
     include_start_point: bool = True,
 ) -> TimeSeriesData:
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(0)
     date_start = datetime.strptime(date_start_str, "%Y-%m-%d %H:%M:%S")
     ts_val = np.random.normal(10, 3, length)
@@ -49,6 +50,7 @@ def generate_data_with_sudden_granularity_changes(length: int = 200) -> TimeSeri
     (e.g., before 2 weeks ago, hourly data; after 2 weeks ago, 15 minute granularity)
     Common with ODS data because of ODS rollups
     """
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(0)
     len_list = [length // 4, length // 4, length // 4, length - length // 4 * 3]
     gran_list = [3600, 900, 600, 300]
@@ -80,6 +82,7 @@ def generate_data_with_individual_missing_datapoints(
     Generate data with individual missing datapoints
     Most often found when counting in Scuba without fills
     """
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(0)
 
     ts = generate_ts_data(
@@ -112,6 +115,7 @@ def generate_irregular_granularity_data(
     Generate irregular granularity data
     Most often found in ODS
     """
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(seed)
     n = int(length * percentage)
 

@@ -15,6 +15,7 @@ from kats.detectors.threshold_detector import StaticThresholdModel
 
 class TestStaticThresholdModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(928)
         self.n = 72
         time = pd.date_range("2021-01-01", periods=self.n, freq="H")

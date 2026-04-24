@@ -17,6 +17,7 @@ from kats.evaluation.evaluator import EvaluationObject, Evaluator
 from kats.metrics.metrics import core_metric
 from kats.tests.test_backtester_dummy_data import PROPHET_0_108_FCST_DUMMY_DATA
 
+# pyrefly: ignore [bad-argument-type]
 np.random.seed(42)
 
 # Constant Values

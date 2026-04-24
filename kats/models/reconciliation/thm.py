@@ -143,6 +143,7 @@ class TemporalHierarchicalModel:
                 )
                 m.fit()
                 models[bm.level] = m
+        # pyrefly: ignore [bad-assignment]
         self.models = models
         self.info_fcsts = fcsts
         self.info_residuals = residuals
@@ -215,6 +216,7 @@ class TemporalHierarchicalModel:
                 # pyre-fixme[16]: `Optional` has no attribute `__getitem__`.
                 if models[k] is not None:
                     try:
+                        # pyrefly: ignore [bad-index, unsupported-operation]
                         vals = self._get_residuals(models[k])
                     except Exception as e:
                         msg = (
@@ -331,6 +333,7 @@ class TemporalHierarchicalModel:
             # assert models is not None
             # pyre-fixme[16]: `Optional` has no attribute `__getitem__`.
             if models[k] is not None:
+                # pyrefly: ignore [bad-index, unsupported-operation]
                 orig_fcst[k] = models[k].predict(steps=num, freq="D")["fcst"].values
             else:
                 fcst_num = len(self.info_fcsts[k])
@@ -463,6 +466,7 @@ class TemporalHierarchicalModel:
         """
 
         if freq is None:
+            # pyrefly: ignore [bad-assignment]
             freq = self.data.infer_freq_robust()
         last_timestamp = self.data.time.max()
         fcsts = self._predict(
@@ -474,7 +478,9 @@ class TemporalHierarchicalModel:
             for k in fcsts[elm]:
                 fcst_num = len(fcsts[elm][k])
                 time = pd.date_range(
+                    # pyrefly: ignore [unsupported-operation]
                     last_timestamp + freq * k,
+                    # pyrefly: ignore [unsupported-operation]
                     last_timestamp + freq * k * fcst_num,
                     periods=fcst_num,
                 )

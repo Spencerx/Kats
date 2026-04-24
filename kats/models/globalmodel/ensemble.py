@@ -141,6 +141,7 @@ class GMEnsemble:
         """
 
         if random_seed is not None:
+            # pyrefly: ignore [bad-argument-type]
             np.random.seed(random_seed)
             torch.manual_seed(random_seed)
             # to ensure performance
@@ -280,7 +281,10 @@ class GMEnsemble:
 
             df.columns = col_names
             df["time"] = pd.date_range(
-                first_timestamp + self.params.freq, periods=steps, freq=self.params.freq
+                # pyrefly: ignore [unsupported-operation]
+                first_timestamp + self.params.freq,
+                periods=steps,
+                freq=self.params.freq,
             )
             return idx, df
 
@@ -371,6 +375,7 @@ class GMEnsemble:
                 try:
                     ans[k] = self._combine_fcst(
                         k,
+                        # pyrefly: ignore [bad-argument-type]
                         [all_fcsts[i][k] for i in range(self.model_num)],
                         steps,
                         raw,
@@ -398,16 +403,19 @@ class GMEnsemble:
             # clean-up unnecessary info
             [gm._reset_nn_states() for gm in self.gm_models]
             state_dict = (
+                # pyrefly: ignore [missing-attribute]
                 [gm.rnn.state_dict() for gm in self.gm_models]
                 if self.params.model_type == "rnn"
                 else None
             )
             encoder_dict = (
+                # pyrefly: ignore [missing-attribute]
                 [gm.encoder.state_dict() for gm in self.gm_models]
                 if self.params.model_type == "s2s"
                 else None
             )
             decoder_dict = (
+                # pyrefly: ignore [missing-attribute]
                 [gm.decoder.state_dict() for gm in self.gm_models]
                 if self.params.model_type == "s2s"
                 else None
@@ -488,6 +496,7 @@ class GMEnsemble:
             logging.error(msg)
             raise ValueError(msg)
 
+        # pyrefly: ignore [bad-index]
         steps = np.max([len(test_valid_TSs[t]) for t in keys])
 
         fcst = self.predict(test_train_TSs, steps=steps, raw=True)
@@ -503,6 +512,7 @@ class GMEnsemble:
             else range(len(test_train_TSs))
         )
         for k in keys:
+            # pyrefly: ignore [bad-index]
             tmp = test_valid_TSs[k].value.values
             tmp_step = len(tmp) // fcst_window + int(len(tmp) % fcst_window != 0)
             tmp_fcst_length = tmp_step * fcst_window
@@ -540,10 +550,13 @@ def load_gmensemble_from_file(file_name: str) -> GMEnsemble:
             tmp_gmmodel = GMModel(gmparam)
             if gmparam.model_type == "rnn":
                 tmp_gmmodel.build_rnn()
+                # pyrefly: ignore [missing-attribute, unsupported-operation]
                 tmp_gmmodel.rnn.load_state_dict(info["state_dict"][i])
             else:
                 tmp_gmmodel.build_s2s()
+                # pyrefly: ignore [missing-attribute]
                 tmp_gmmodel.encoder.load_state_dict(info["encoder_dict"][i])
+                # pyrefly: ignore [missing-attribute]
                 tmp_gmmodel.decoder.load_state_dict(info["decoder_dict"][i])
             gm_models.append(tmp_gmmodel)
         info["gmensemble_params"]["gmparam"] = gmparam

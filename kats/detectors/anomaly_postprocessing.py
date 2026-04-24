@@ -295,6 +295,7 @@ class AnomalyPostProcessHandler:
 
         # pyre-ignore [16]
         start_time_list = [ia.start for ia in self.anomaly_interval_list]
+        # pyrefly: ignore [not-iterable]
         end_time_list = [ia.end for ia in self.anomaly_interval_list]
 
         self.prelim_res = pd.DataFrame(

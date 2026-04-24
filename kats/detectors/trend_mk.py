@@ -342,8 +342,10 @@ class MKDetector(Detector):
                 trend_dict[ts.columns[i]] = trend_i
             except ZeroDivisionError:
                 Tau_dict[ts.columns[i]] = None
+                # pyrefly: ignore [unsupported-operation]
                 trend_dict[ts.columns[i]] = None
 
+        # pyrefly: ignore [bad-return]
         return anchor_date, trend_dict, p, Tau_dict
 
     def runDetector(self, ts: pd.DataFrame) -> Dict[str, Any]:
@@ -669,10 +671,12 @@ class MKDetector(Detector):
                     figsize = (14, 5)
                 _, ax = plt.subplots(figsize=figsize)
 
+            # pyrefly: ignore [bad-argument-type]
             ax.plot(ts.index, ts.values)
 
             trend_annotated = False
             for t in detected_time_points:
+                # pyrefly: ignore [bad-argument-type]
                 ax.axvline(x=t.start_time, color=changepoint_color)
                 trend_annotated = True
             if not trend_annotated:

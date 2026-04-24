@@ -141,6 +141,7 @@ class NowcastingPlusModel(m.Model):
 
         # filterout + - inf, nan
         self.df_poly = self.df_poly[
+            # pyrefly: ignore [bad-argument-count]
             ~self.df_poly.isin([np.nan, np.inf, -np.inf]).any(1)
         ]
 
@@ -179,6 +180,7 @@ class NowcastingPlusModel(m.Model):
             feature_names.append("MA_" + str(n))
 
         self.df = self.df[
+            # pyrefly: ignore [bad-argument-count]
             ~self.df.isin([np.nan, np.inf, -np.inf]).any(1)
         ]  # filterout + - inf, nan
         self.feature_names = feature_names
@@ -195,6 +197,7 @@ class NowcastingPlusModel(m.Model):
         logging.debug("Call fit() with parameters: step:{step}".format(step=self.step))
 
         n = 1
+        # pyrefly: ignore [bad-argument-count]
         train_index = self.df[~self.df.isin([np.nan, np.inf, -np.inf]).any(1)].index
 
         X_train = self.df[self.feature_names].loc[train_index]

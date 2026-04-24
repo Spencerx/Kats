@@ -26,6 +26,7 @@ class QuadraticModelTest(TestCase):
 
     def test_fit_forecast(self) -> None:
         params = QuadraticModelParams()
+        # pyrefly: ignore [bad-argument-type]
         m = QuadraticModel(self.TSData, params)
         m.fit()
         m.predict(steps=30, freq="MS")
@@ -44,6 +45,7 @@ class QuadraticModelTest(TestCase):
 
     def test_predict_before_fit(self) -> None:
         params = QuadraticModelParams()
+        # pyrefly: ignore [bad-argument-type]
         m = QuadraticModel(self.TSData, params)
         with self.assertRaises(ValueError):
             m.predict(steps=30, freq="MS", include_history=True)
@@ -58,6 +60,7 @@ class QuadraticModelTest(TestCase):
             params,
         )
 
+        # pyrefly: ignore [bad-argument-type]
         m = QuadraticModel(self.TSData, params)
 
         # test __str__ method

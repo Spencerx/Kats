@@ -174,6 +174,7 @@ class STLFModel(Model[STLFParams]):
     fcst_upper: Optional[Union[npt.NDArray, pd.Series, pd.DataFrame]] = None
     dates: Optional[pd.DatetimeIndex] = None
     fcst_df: Optional[pd.DataFrame] = None
+    # pyrefly: ignore [invalid-annotation]
     deseasonal_operator: Callable(Union[_operator.truediv, _operator.sub])[
         [
             Union[pd.Series, pd.DataFrame],
@@ -181,6 +182,7 @@ class STLFModel(Model[STLFParams]):
         ],
         Union[pd.Series, pd.DataFrame],
     ]
+    # pyrefly: ignore [invalid-annotation]
     reseasonal_operator: Callable(Union[_operator.mul, _operator.add])[
         [
             Union[pd.Series, pd.DataFrame],
@@ -250,7 +252,9 @@ class STLFModel(Model[STLFParams]):
         self.desea_data = desea_data = copy(self.data)
         # pyre-fixme[16]: `Optional` has no attribute `value`.
         desea_data.value = self.deseasonal_operator(
-            desea_data.value, decomp["seasonal"].value
+            # pyrefly: ignore [missing-attribute]
+            desea_data.value,
+            decomp["seasonal"].value,
         )
 
         return self
@@ -373,6 +377,7 @@ class STLFModel(Model[STLFParams]):
         logging.debug("Forecast data: {fcst}".format(fcst=self.y_fcst))
 
         # TODO: create empirical uncertainty interval
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=self.freq)
         self.dates = dates[dates != last_date]  # Return correct number of periods

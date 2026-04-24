@@ -45,7 +45,9 @@ class DTWCPDTest(TestCase):
 
         expected_result = [
             DTWCPDChangePoint(
+                # pyrefly: ignore [bad-argument-type]
                 start_time=pd.Timestamp("2021-03-02 00:00:00"),
+                # pyrefly: ignore [bad-argument-type]
                 end_time=pd.Timestamp("2021-04-20 00:00:00"),
                 confidence=1e9,
                 ts_name="ts3",
@@ -98,7 +100,9 @@ class DTWCPDTest(TestCase):
 
         expected_result = [
             DTWCPDChangePoint(
+                # pyrefly: ignore [bad-argument-type]
                 start_time=pd.Timestamp("2021-03-02 00:00:00"),
+                # pyrefly: ignore [bad-argument-type]
                 end_time=pd.Timestamp("2021-04-20 00:00:00"),
                 confidence=mock.ANY,
                 ts_name="ts3",

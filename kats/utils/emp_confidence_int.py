@@ -202,6 +202,7 @@ class EmpConfidenceInt:
         horizons = np.arange(1, steps + 1)
         coefs = self.coefs
         assert coefs is not None  # set by get_lr above
+        # pyrefly: ignore [missing-attribute]
         me = stats.norm.ppf(self.confidence_level) * (horizons * coefs[0] + coefs[1])
 
         self.df = df = pd.DataFrame(

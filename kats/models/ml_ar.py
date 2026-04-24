@@ -95,6 +95,7 @@ def denormalize(
         norm_data = (x.mul(normalizer2, axis=0)).add(normalizer, axis=0)
     else:
         raise ValueError(f"`sub_dive` method {sub_div} is invalid.")
+    # pyrefly: ignore [bad-return]
     return norm_data
 
 
@@ -485,6 +486,7 @@ class MLARModel:
             raise ValueError(msg)
 
         # infer freq
+        # pyrefly: ignore [bad-index]
         self.params.freq = self._infer_freq(data[keys[0]].time, self.params.freq)
 
         data_dict = {}
@@ -493,6 +495,7 @@ class MLARModel:
         offset = pd.tseries.frequencies.to_offset(self.params.freq)
 
         for k in keys:
+            # pyrefly: ignore [bad-index]
             curr_series_data = self._check_single_ts(data[k])
 
             data_dict[k] = curr_series_data
@@ -697,7 +700,9 @@ class MLARModel:
 
         # All DataFrames have the same columns.
         all_col_names = (
+            # pyrefly: ignore [unbound-name]
             list(norm_in_data.columns)
+            # pyrefly: ignore [unbound-name]
             + list(norm_window_stats.columns)
             + cov_hist_data_cols
             + cat_encoded_data_cols
@@ -935,6 +940,7 @@ class MLARModel:
 
         all_out_data = pd.concat(all_out_data_list, copy=False)
 
+        # pyrefly: ignore [unbound-name]
         col_names = list(curr_feat.columns) + ["horizon"]
 
         return full_mat, all_out_data, col_names
@@ -1046,6 +1052,7 @@ class MLARModel:
 
         res = {dummy: group for dummy, group in fc_postproc.groupby("dummy")}
         # res = {series_name: group for series_name, group in fc_postproc.groupby("series_name")}
+        # pyrefly: ignore [bad-return]
         return res
 
     def _train(
@@ -1243,6 +1250,7 @@ class MLARModel:
         self.forecast_data_in = self.full_mat
         self.forecast_data = meta_data
 
+        # pyrefly: ignore [missing-attribute]
         self.forecast_data.loc[:, "forecast"] = self.model.predict(
             self.forecast_data_in
         )

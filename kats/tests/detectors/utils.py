@@ -29,6 +29,7 @@ from scipy.special import expit  # @manual
 
 
 def gen_no_trend_data_ndim(time: pd.Series, ndim: int = 1) -> TimeSeriesData:
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(20)
     n_days = len(time)
     data = np.ones((n_days, ndim)) * np.random.randint(1000, size=(1, ndim))
@@ -44,12 +45,15 @@ def gen_trend_data_ndim(
     change_smoothness: float = 5.0,
     ndim: int = 1,
 ) -> Tuple[TimeSeriesData, List[float]]:
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(20)
 
     n_days = len(time)
     ix = np.array([np.arange(n_days) for i in range(ndim)])
+    # pyrefly: ignore [no-matching-overload]
     initial = np.random.randint(9000.0, 10000.0, size=(ndim, 1))
     trend_change = -np.random.randint(60, size=(ndim, 1))
+    # pyrefly: ignore [no-matching-overload]
     trend = np.random.randint(2.0, 6.0, size=(ndim, 1))
     noise = np.array([1e-3] * ndim).reshape((ndim, 1))
     t_change = np.random.randint(int(0.4 * n_days), int(0.7 * n_days), size=(ndim, 1))

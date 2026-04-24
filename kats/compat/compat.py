@@ -65,20 +65,26 @@ class Version:
         return pv.parse(version)
 
     def __lt__(self, other: V) -> bool:
+        # pyrefly: ignore [unsupported-operation]
         return self._compare(other, lambda s, o: s < o)
 
     def __le__(self, other: V) -> bool:
+        # pyrefly: ignore [unsupported-operation]
         return self._compare(other, lambda s, o: s <= o)
 
+    # pyrefly: ignore [bad-override]
     def __eq__(self, other: V) -> bool:
         return self._compare(other, lambda s, o: s == o)
 
     def __ge__(self, other: V) -> bool:
+        # pyrefly: ignore [unsupported-operation]
         return self._compare(other, lambda s, o: s >= o)
 
     def __gt__(self, other: V) -> bool:
+        # pyrefly: ignore [unsupported-operation]
         return self._compare(other, lambda s, o: s > o)
 
+    # pyrefly: ignore [bad-override]
     def __ne__(self, other: V) -> bool:
         return self._compare(other, lambda s, o: s != o)
 

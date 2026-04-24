@@ -33,6 +33,7 @@ class cupikTest(TestCase):
             ]
         )
         pipe.fit(
+            # pyrefly: ignore [bad-argument-type]
             self.TSData,
             params={"trend_detector": {"window_size": 7, "direction": "up"}},
         )
@@ -40,6 +41,7 @@ class cupikTest(TestCase):
         self.assertEqual(len(pipe.metadata["trend_detector"][0]), 50)
         self.assertEqual(
             len(pipe.metadata["trend_detector"][0]),
+            # pyrefly: ignore [bad-argument-type]
             len(MKDetector(data=self.TSData).detector(window_size=7, direction="up")),
         )
 
@@ -51,11 +53,13 @@ class cupikTest(TestCase):
                 ("trend_detector", MKDetector(threshold=0.8)),
             ]
         )
+        # pyrefly: ignore [bad-argument-type]
         pipe.fit(self.TSData)
 
         self.assertEqual(len(pipe.metadata["trend_detector"][0]), 2)
         self.assertEqual(
             len(pipe.metadata["trend_detector"][0]),
+            # pyrefly: ignore [bad-argument-type]
             len(MKDetector(data=self.TSData).detector()),
         )
 
@@ -65,6 +69,7 @@ class cupikTest(TestCase):
             #  `List[Tuple[str, ThetaModel]]`.
             [("theta_model", ThetaModel(data=self.TSData, params=ThetaParams()))]
         )
+        # pyrefly: ignore [bad-argument-type]
         fitted = pipe.fit(self.TSData)
         bools = (
             # pyre-fixme[16]: Optional type has no attribute `values`.
@@ -86,9 +91,11 @@ class cupikTest(TestCase):
             #  `List[Tuple[str, Union[MKDetector, ThetaModel]]]`.
             [
                 ("trend_detector", MKDetector(threshold=0.8)),
+                # pyrefly: ignore [bad-argument-type]
                 ("theta_model", ThetaModel(data=self.TSData, params=ThetaParams())),
             ]
         )
+        # pyrefly: ignore [bad-argument-type]
         fitted = pipe.fit(self.TSData)
         self.assertEqual(len(pipe.metadata["trend_detector"][0]), 2)
         expected = 433.3285913479718

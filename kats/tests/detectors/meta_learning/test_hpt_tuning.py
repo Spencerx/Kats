@@ -110,6 +110,7 @@ class TestMetaDetectHptSelect(TestCase):
 
         mdhs.plot()
 
+        # pyrefly: ignore [bad-argument-type]
         res = mdhs.get_hpt_from_features(np.random.normal(0, 1, [10, 40]))
         self.assertEqual(res.shape, (10, 4))
 
@@ -136,6 +137,7 @@ class TestMetaDetectHptSelect(TestCase):
 
         mdhs.plot()
 
+        # pyrefly: ignore [bad-argument-type]
         res = mdhs.get_hpt_from_features(np.random.normal(0, 1, [10, 40]))
         self.assertEqual(res.shape, (10, 2))
 
@@ -160,6 +162,7 @@ class TestMetaDetectHptSelect(TestCase):
 
         # haven't been trained
         with self.assertRaises(AssertionError):
+            # pyrefly: ignore [bad-argument-type]
             _ = mdhs.get_hpt_from_features(np.random.normal(0, 1, [10, 40]))
 
         mdhs.train(
@@ -173,8 +176,10 @@ class TestMetaDetectHptSelect(TestCase):
 
         # unmatched dimension
         with self.assertRaises(RuntimeError):
+            # pyrefly: ignore [bad-argument-type]
             _ = mdhs.get_hpt_from_features(np.random.normal(0, 1, [10, 30]))
 
         # unmatched format
         with self.assertRaises(IndexError):
+            # pyrefly: ignore [bad-argument-type]
             _ = mdhs.get_hpt_from_features(np.random.normal(0, 1, 40))

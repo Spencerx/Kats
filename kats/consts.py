@@ -1059,16 +1059,22 @@ class TimeSeriesData:
             return self._interpolate_new(df, freq, origin, method, **kwargs)
 
         if method == "linear":
+            # pyrefly: ignore [unexpected-keyword]
             df = df.resample(rule=freq, base=base).interpolate(method="linear")
 
         elif method == "ffill":
+            # pyrefly: ignore [unexpected-keyword]
             df = df.resample(rule=freq, base=base).ffill()
 
         elif method == "bfill":
+            # pyrefly: ignore [unexpected-keyword]
             df = df.resample(rule=freq, base=base).bfill()
         else:
+            # pyrefly: ignore [unexpected-keyword]
             df = df.resample(rule=freq, base=base).interpolate(
-                method=cast(INTERPOLATION_METHOD_TYPE, method), **kwargs
+                # pyrefly: ignore [bad-argument-type]
+                method=cast(INTERPOLATION_METHOD_TYPE, method),
+                **kwargs,
             )
 
         df = df.reset_index().rename(columns={"index": self.time_col_name})
@@ -1096,7 +1102,9 @@ class TimeSeriesData:
         else:
             # pyre-ignore
             df = df.resample(rule=freq, origin=origin).interpolate(
-                method=cast(INTERPOLATION_METHOD_TYPE, method), **kwargs
+                # pyrefly: ignore [bad-argument-type]
+                method=cast(INTERPOLATION_METHOD_TYPE, method),
+                **kwargs,
             )
 
         df = df.reset_index().rename(columns={"index": self.time_col_name})
@@ -1151,6 +1159,7 @@ class TimeSeriesData:
         else:
             fig = plt.gcf()
         if grid:
+            # pyrefly: ignore [bad-argument-type]
             ax.grid(True, **grid_kwargs_)
         fig.tight_layout()
         df.plot(x=self.time_col_name, y=cols, ax=ax, **plot_kwargs)

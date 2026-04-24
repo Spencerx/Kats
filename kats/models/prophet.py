@@ -251,6 +251,7 @@ class ProphetModel(Model[ProphetParams]):
         super().__init__(data, params)
         if _no_prophet:
             raise RuntimeError("requires prophet to be installed")
+        # pyrefly: ignore [bad-override]
         self.data: TimeSeriesData = data
         self._data_params_validation()
 
@@ -421,16 +422,20 @@ class ProphetModel(Model[ProphetParams]):
 
         # Add any specified custom seasonalities.
         for custom_seasonality in self.params.custom_seasonalities:
+            # pyrefly: ignore [missing-attribute]
             prophet.add_seasonality(**custom_seasonality)
 
         # Add any extra regressors
         for regressor in self.params.extra_regressors:
+            # pyrefly: ignore [missing-attribute]
             prophet.add_regressor(**regressor)
 
         try:
             if "seed" in kwargs:
+                # pyrefly: ignore [missing-attribute]
                 self.model = prophet.fit(df=df, seed=kwargs["seed"])
             else:
+                # pyrefly: ignore [missing-attribute]
                 self.model = prophet.fit(df=df)
         except Exception as e:
             logging.error(e)
@@ -482,6 +487,7 @@ class ProphetModel(Model[ProphetParams]):
         if "seed" in kwargs:
             np.random.seed(kwargs["seed"])
 
+        # pyrefly: ignore [missing-attribute]
         fcst = model.predict(future)
         if raw:
             return fcst
@@ -533,9 +539,12 @@ def predict_uncertainty(
     """
     sim_values = sample_posterior_predictive(prophet_model, df, vectorized)
 
+    # pyrefly: ignore [missing-attribute]
     lower_p = 100 * (1.0 - prophet_model.interval_width) / 2
+    # pyrefly: ignore [missing-attribute]
     upper_p = 100 * (1.0 + prophet_model.interval_width) / 2
     half_margin = (
+        # pyrefly: ignore [missing-attribute]
         prophet_model.y_scale * confidence_band_margin / 2.0
         if confidence_band_margin
         else 0.0
@@ -545,9 +554,11 @@ def predict_uncertainty(
 
     for key in ["yhat", "trend"]:
         series["{}_lower".format(key)] = (
+            # pyrefly: ignore [missing-attribute]
             prophet_model.percentile(sim_values[key], lower_p, axis=0) - half_margin
         )
         series["{}_upper".format(key)] = (
+            # pyrefly: ignore [missing-attribute]
             prophet_model.percentile(sim_values[key], upper_p, axis=0) + half_margin
         )
 
@@ -572,24 +583,31 @@ def _sample_predictive_trend_vectorized(
         A `np.ndarray` object with size (n_samples, len(df)) representing the trend samples.
     """
 
+    # pyrefly: ignore [missing-attribute]
     if prophet_model.growth == "linear":
         return sample_linear_predictive_trend_vectorize(
             prophet_model, df, n_samples, iteration
         )
 
+    # pyrefly: ignore [missing-attribute]
     deltas = prophet_model.params["delta"][iteration]
+    # pyrefly: ignore [missing-attribute]
     m0 = prophet_model.params["m"][iteration]
+    # pyrefly: ignore [missing-attribute]
     k = prophet_model.params["k"][iteration]
     if prophet_model.growth == "logistic":
+        # pyrefly: ignore [missing-attribute]
         expected = prophet_model.piecewise_logistic(
             df["t"].values,
             df["cap_scaled"].values,
             deltas,
             k,
             m0,
+            # pyrefly: ignore [missing-attribute]
             prophet_model.changepoints_t,
         )
     elif prophet_model.growth == "flat":
+        # pyrefly: ignore [missing-attribute]
         expected = prophet_model.flat_trend(df["t"].values, m0)
     else:
         raise NotImplementedError
@@ -597,6 +615,7 @@ def _sample_predictive_trend_vectorized(
     uncertainty = _sample_trend_uncertainty(prophet_model, n_samples, df, iteration)
     return (
         np.tile(expected, (n_samples, 1)) + uncertainty
+        # pyrefly: ignore [missing-attribute]
     ) * prophet_model.y_scale + np.tile(df["floor"].values, (n_samples, 1))
 
 
@@ -631,12 +650,18 @@ def _sample_trend_uncertainty(
         if n_length > 1:
             single_diff = np.diff(future_df["t"]).mean()
         else:
+            # pyrefly: ignore [missing-attribute]
             single_diff = np.diff(prophet_model.history["t"]).mean()
+        # pyrefly: ignore [missing-attribute]
         change_likelihood = len(prophet_model.changepoints_t) * single_diff
+        # pyrefly: ignore [missing-attribute]
         deltas = prophet_model.params["delta"][iteration]
+        # pyrefly: ignore [missing-attribute]
         m0 = prophet_model.params["m"][iteration]
+        # pyrefly: ignore [missing-attribute]
         k = prophet_model.params["k"][iteration]
         mean_delta = np.mean(np.abs(deltas)) + 1e-8
+        # pyrefly: ignore [missing-attribute]
         if prophet_model.growth == "linear":
             mat = _make_trend_shift_matrix(
                 mean_delta, change_likelihood, n_length, n_samples=n_samples
@@ -681,6 +706,7 @@ def _make_trend_shift_matrix(
     Each row represents a different sample of a possible future, and each column is a time step into the future.
     """
     # create a bool matrix of where these trend shifts should go
+    # pyrefly: ignore [no-matching-overload]
     bool_slope_change = np.random.uniform(size=(n_samples, future_length)) < likelihood
     shift_values = np.random.laplace(0, mean_delta, size=bool_slope_change.shape)
     mat = shift_values * bool_slope_change
@@ -704,20 +730,26 @@ def predict(
     Returns:
         A `pd.DataFrame` object for the forecasts.
     """
+    # pyrefly: ignore [missing-attribute]
     if prophet_model.history is None:
         raise Exception("Model has not been fit.")
 
     if df is None:
+        # pyrefly: ignore [missing-attribute]
         df = prophet_model.history.copy()
     else:
         if df.shape[0] == 0:
             raise ValueError("Dataframe has no rows.")
+        # pyrefly: ignore [missing-attribute]
         df = prophet_model.setup_dataframe(df)
 
+    # pyrefly: ignore [missing-attribute]
     df["trend"] = prophet_model.predict_trend(df)
     # TODO: the seasoanl part will be computed twice when we need to compute uncertainty. Remove this part if possible.
+    # pyrefly: ignore [missing-attribute]
     seasonal_components = prophet_model.predict_seasonal_components(df)
 
+    # pyrefly: ignore [missing-attribute]
     if prophet_model.uncertainty_samples:
         intervals = predict_uncertainty(
             prophet_model, df, vectorized, confidence_band_margin
@@ -729,9 +761,11 @@ def predict(
     cols = ["ds", "trend"]
     if "cap" in df:
         cols.append("cap")
+    # pyrefly: ignore [missing-attribute]
     if prophet_model.logistic_floor:
         cols.append("floor")
     # Add in forecast components
+    # pyrefly: ignore [no-matching-overload]
     df2 = pd.concat((df[cols], intervals, seasonal_components), axis=1)
     df2["yhat"] = (
         df2["trend"] * (1 + df2["multiplicative_terms"]) + df2["additive_terms"]
@@ -754,6 +788,7 @@ def sample_model_vectorized(
         A dictionary (with key ("yhat", "trend")) for the samples of "yhat" and "trend".
     """
     # Get the seasonality and regressor components, which are deterministic per iteration
+    # pyrefly: ignore [missing-attribute]
     beta = prophet_model.params["beta"][iteration]
     Xb_a = (
         # pyre-fixme[16]: `ndarray` has no attribute `values`.
@@ -765,7 +800,9 @@ def sample_model_vectorized(
         prophet_model, df, n_samples, iteration
     )
 
+    # pyrefly: ignore [missing-attribute]
     sigma = prophet_model.params["sigma_obs"][iteration]
+    # pyrefly: ignore [missing-attribute]
     noise_terms = np.random.normal(0, sigma, trends.shape) * prophet_model.y_scale
 
     return {"yhat": trends * (1 + Xb_m) + Xb_a + noise_terms, "trend": trends}
@@ -783,9 +820,13 @@ def sample_posterior_predictive(
     Returns:
         A dictionary with keys ("yhat", "trend") for posterior predictive samples for the "yhat" and "trend".
     """
+    # pyrefly: ignore [missing-attribute]
     n_iterations = prophet_model.params["k"].shape[0]
     samp_per_iter = max(
-        1, int(np.ceil(prophet_model.uncertainty_samples / float(n_iterations)))
+        # pyrefly: ignore [missing-attribute]
+        1,
+        # pyrefly: ignore [missing-attribute]
+        int(np.ceil(prophet_model.uncertainty_samples / float(n_iterations))),
     )
     # Generate seasonality features once so we can re-use them.
     (
@@ -793,6 +834,7 @@ def sample_posterior_predictive(
         _,
         component_cols,
         _,
+        # pyrefly: ignore [missing-attribute]
     ) = prophet_model.make_all_seasonality_features(df)
     sim_values = {"yhat": [], "trend": []}
     for i in range(n_iterations):
@@ -810,6 +852,7 @@ def sample_posterior_predictive(
                 sim_values[k].append(sims[k])
         else:
             sims = [
+                # pyrefly: ignore [missing-attribute]
                 prophet_model.sample_model(
                     df=df,
                     seasonal_features=seasonal_features,
@@ -882,7 +925,12 @@ def _logistic_uncertainty(
 
     # for logistic growth we need to evaluate the trend all the way from the start of the train item
     historical_mat, historical_time = _make_historical_mat_time(
-        deltas, prophet_model.changepoints_t, len(mat), single_diff
+        # pyrefly: ignore [missing-attribute]
+        deltas,
+        # pyrefly: ignore [missing-attribute]
+        prophet_model.changepoints_t,
+        len(mat),
+        single_diff,
     )
     mat = np.concatenate([historical_mat, mat], axis=1)
     full_t_time = np.concatenate([historical_time, t_time])
@@ -936,9 +984,13 @@ def sample_linear_predictive_trend_vectorize(
         A `np.array` with shape (sample_size, len(df)) containing the vector of trend samples.`
 
     """
+    # pyrefly: ignore [missing-attribute]
     k = prophet_model.params["k"][iteration]
+    # pyrefly: ignore [missing-attribute]
     m = prophet_model.params["m"][iteration]
+    # pyrefly: ignore [missing-attribute]
     deltas = prophet_model.params["delta"][iteration]
+    # pyrefly: ignore [missing-attribute]
     changepoints_t = prophet_model.changepoints_t
     # pyre-fixme[6]: For 1st argument expected `Sequence[Union[_SupportsArray[dtype[A...
     changepoint_ts = np.vstack([changepoints_t] * sample_size)
@@ -985,4 +1037,5 @@ def sample_linear_predictive_trend_vectorize(
 
     trend = _piecewise_linear_vectorize(t, deltas, k, m, changepoint_ts)
 
+    # pyrefly: ignore [missing-attribute]
     return trend * prophet_model.y_scale + df["floor"].values

@@ -144,6 +144,7 @@ class QuadraticModel(Model[QuadraticModelParams]):
         self.y_fcst_upper = pd.Series(y_fcst_upper, copy=False)
 
         # create future dates
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=self.freq)
         self.dates = dates[dates != last_date]

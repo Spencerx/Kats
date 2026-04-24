@@ -133,6 +133,7 @@ class HoltWintersModel(Model[HoltWintersParams]):
             # pyre-fixme[16]: `Optional` has no attribute `value`.
             self.data.value,
             trend=self.params.trend,
+            # pyrefly: ignore [unexpected-keyword]
             damped=self.params.damped,
             seasonal=self.params.seasonal,
             seasonal_periods=self.params.seasonal_periods,
@@ -169,6 +170,7 @@ class HoltWintersModel(Model[HoltWintersParams]):
             self.freq = pd.infer_freq(self.data.time)
         else:
             self.freq = kwargs["freq"]
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=self.freq)
         self.dates = dates[dates != last_date]  # Return correct number of periods
@@ -212,11 +214,13 @@ class HoltWintersModel(Model[HoltWintersParams]):
         logging.info("Generated forecast data from Holt-Winters model.")
 
         if include_history:
+            # pyrefly: ignore [missing-attribute]
             history_fcst = model.predict(start=0, end=len(self.data.time) - 1)
             self.fcst_df = fcst = pd.concat(
                 [
                     pd.DataFrame(
                         {
+                            # pyrefly: ignore [missing-attribute]
                             "time": self.data.time,
                             "fcst": history_fcst,
                         },

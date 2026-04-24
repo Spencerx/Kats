@@ -268,6 +268,7 @@ class LSTMModel(Model[LSTMParams]):
         logging.info("Generated forecast data from LSTM model.")
         logging.debug(f"Forecast data: {fcst_denormalized}")
 
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=self.freq)
         self.dates = dates[dates != last_date]  # Return correct number of periods

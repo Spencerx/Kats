@@ -260,7 +260,9 @@ class LSTMModelTest(TestCase):
 
     def test_exec_plot(self) -> None:
         m = LSTMModel(
-            data=TEST_DATA["monthly"]["ts"], params=TEST_DATA["monthly"]["p2"]
+            # pyrefly: ignore [bad-argument-type]
+            data=TEST_DATA["monthly"]["ts"],
+            params=TEST_DATA["monthly"]["p2"],
         )
         m.fit(**TEST_DATA["monthly"]["m1"])
         _ = m.predict(steps=STEPS_1)
@@ -268,13 +270,17 @@ class LSTMModelTest(TestCase):
 
     def test_name(self) -> None:
         m = LSTMModel(
-            data=TEST_DATA["monthly"]["ts"], params=TEST_DATA["monthly"]["p2"]
+            # pyrefly: ignore [bad-argument-type]
+            data=TEST_DATA["monthly"]["ts"],
+            params=TEST_DATA["monthly"]["p2"],
         )
         self.assertEqual(m.__str__(), "LSTM")
 
     def test_search_space(self) -> None:
         m = LSTMModel(
-            data=TEST_DATA["monthly"]["ts"], params=TEST_DATA["monthly"]["p2"]
+            # pyrefly: ignore [bad-argument-type]
+            data=TEST_DATA["monthly"]["ts"],
+            params=TEST_DATA["monthly"]["p2"],
         )
         self.assertEqual(
             m.get_parameter_search_space(),

@@ -505,17 +505,22 @@ class MetaLearnModelSelect:
         if self.scale:
             test = (test - self.x_mean) / self.x_std
         test = test.reshape([1, -1])
+        # pyrefly: ignore [missing-attribute]
         m = len(self.clf.estimators_)
         data = np.array(
+            # pyrefly: ignore [missing-attribute]
             [self.clf.estimators_[i].predict_proba(test)[0] for i in range(m)]
         )
+        # pyrefly: ignore [missing-attribute]
         prob = self.clf.predict_proba(test)[0]
         idx = np.argsort(-prob)[:2]
         pvalue = self._bootstrap(data[:, idx[:2]])
         if pvalue >= sig_level:
+            # pyrefly: ignore [missing-attribute]
             label = self.clf.classes_[idx[:2]]
             prob = prob[idx[:2]]
         else:
+            # pyrefly: ignore [missing-attribute]
             label = self.clf.classes_[idx[:1]]
             prob = prob[idx[:1]]
         ans = {"label": label, "probability": prob, "pvalue": pvalue}
@@ -561,6 +566,7 @@ class RandomDownSampler:
             idx_dict[c].append(i)
 
         for key in idx_dict:
+            # pyrefly: ignore [unsupported-operation]
             idx_dict[key] = np.random.choice(idx_dict[key], size=min_n, replace=False)
             resampled_x += self.dataX.iloc[np.asarray(idx_dict[key]), :].values.tolist()
             resampled_y += list(self.dataY.iloc[np.asarray(idx_dict[key])])

@@ -108,6 +108,7 @@ class testVARModel(TestCase):
     # @pytest.mark.image_compare
     # pyre-fixme[56]
     @parameterized.expand([[TEST_DATA["multivariate_2"]["ts"]]])
+    # pyrefly: ignore [bad-return]
     def test_plot_include_history(self, ts: TimeSeriesData) -> plt.Figure:
         # This shouldn't error, but currently does.
         with self.assertRaises(ValueError):

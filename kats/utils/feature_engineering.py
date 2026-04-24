@@ -109,6 +109,7 @@ def date_features(s: pd.Series, result: Optional[pd.DataFrame] = None) -> pd.Dat
     result["dayofyear"] = index.dayofyear
     # pyre-fixme[16]: `DatetimeIndex` has no attribute `quarter`.
     result["quarter"] = index.quarter
+    # pyrefly: ignore [missing-attribute]
     result["season"] = _map(index.month, _SEASON_MAP)
 
     result["weekofyear"] = index.isocalendar().week
@@ -120,16 +121,20 @@ def date_features(s: pd.Series, result: Optional[pd.DataFrame] = None) -> pd.Dat
         # No timezone.
         dates = index.to_numpy()
     first_of_month = pd.to_datetime(dates.astype("datetime64[M]"))
+    # pyrefly: ignore [missing-attribute]
     week_of_month = np.ceil((first_of_month.dayofweek + index.day) / 7.0)
     result["weekofmonth"] = week_of_month.astype(int)
     # result["is_holiday"] = ?
     # result["holiday_types"] = ?
+    # pyrefly: ignore [missing-attribute]
     result["is_weekend"] = index.dayofweek >= 5
     # pyre-fixme[16]: `DatetimeIndex` has no attribute `is_leap_year`.
     result["is_leap_year"] = index.is_leap_year
+    # pyrefly: ignore [missing-attribute]
     result["is_leap_day"] = (index.month == 2) & (index.day == 29)
     # pyre-fixme[16]: `DatetimeIndex` has no attribute `is_month_end`.
     result["is_month_end"] = index.is_month_end
+    # pyrefly: ignore [missing-attribute]
     result["is_quarter_end"] = index.is_month_end & (index.month % 4 == 3)
 
     return result
@@ -158,9 +163,11 @@ def time_features(s: pd.Series, result: Optional[pd.DataFrame] = None) -> pd.Dat
     result["second"] = index.second
     # pyre-fixme[16]: `DatetimeIndex` has no attribute `microsecond`.
     result["milliseconds"] = index.microsecond / 1000
+    # pyrefly: ignore [missing-attribute]
     result["quarterhour"] = index.minute // 15 + 1
     # pyre-fixme[16]: `DatetimeIndex` has no attribute `dayofweek`.
     result["hourofweek"] = index.dayofweek * 24 + index.hour
+    # pyrefly: ignore [missing-attribute]
     result["daytime"] = _map(index.hour, _DAYTIME_MAP)
 
     # No vectorized methods for these:

@@ -32,6 +32,7 @@ class ACFDetectorTest(TestCase):
         detector.plot()
 
     def test_no_seasonality(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
         df_noregress = pd.DataFrame({"no_change": np.random.normal(1, 0.2, 60)})
         df_noregress["time"] = pd.Series(pd.date_range("2019-01-01", "2019-03-01"))

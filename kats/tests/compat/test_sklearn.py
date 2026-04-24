@@ -33,6 +33,7 @@ class TestSklearn(unittest.TestCase):
     # pyre-fixme[2]: Parameter annotation cannot be `Any`.
     def test_mean_squared_error(self, sklearn_mse: Any) -> None:
         sklearn_mse.return_value = 42.0
+        # pyrefly: ignore [bad-argument-type]
         result = sklearn.mean_squared_error(*self.orig_args)
         self.assertEqual(42.0, result)
         sklearn_mse.assert_called_once_with(*self.args, **self.kwargs)
@@ -41,6 +42,7 @@ class TestSklearn(unittest.TestCase):
     # pyre-fixme[2]: Parameter annotation cannot be `Any`.
     def test_root_mean_squared_error(self, sklearn_mse: Any) -> None:
         sklearn_mse.return_value = 42.0
+        # pyrefly: ignore [bad-argument-type]
         result = sklearn.mean_squared_error(*self.orig_args, squared=False)
         # sqrt part of the mocked call
         self.assertEqual(42.0, result)
@@ -53,6 +55,7 @@ class TestSklearn(unittest.TestCase):
     # pyre-fixme[2]: Parameter annotation cannot be `Any`.
     def test_mean_squared_log_error(self, sklearn_msle: Any) -> None:
         sklearn_msle.return_value = 42.0
+        # pyrefly: ignore [bad-argument-type]
         result = sklearn.mean_squared_log_error(*self.orig_args)
         self.assertEqual(42.0, result)
         kwargs = dict(self.kwargs)
@@ -64,6 +67,7 @@ class TestSklearn(unittest.TestCase):
     # pyre-fixme[2]: Parameter annotation cannot be `Any`.
     def test_root_mean_squared_log_error_24(self, sklearn_msle: Any) -> None:
         sklearn_msle.return_value = 36.0
+        # pyrefly: ignore [bad-argument-type]
         result = sklearn.mean_squared_log_error(*self.orig_args, squared=False)
         # sqrt applied after-the-fact
         self.assertEqual(6.0, result)
@@ -76,6 +80,7 @@ class TestSklearn(unittest.TestCase):
     # pyre-fixme[2]: Parameter annotation cannot be `Any`.
     def test_root_mean_squared_log_error(self, sklearn_msle: Any) -> None:
         sklearn_msle.return_value = 36.0
+        # pyrefly: ignore [bad-argument-type]
         result = sklearn.mean_squared_log_error(*self.orig_args, squared=False)
         # sqrt part of the mocked call
         self.assertEqual(36.0, result)

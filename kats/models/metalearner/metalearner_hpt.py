@@ -320,6 +320,7 @@ class MetaLearnHPT:
             msg = f"Dimensions of data_y (dim={dim}) and the input variables (dim={n_cat}+{n_num}) do not agree!"
             raise _log_error(msg)
 
+        # pyrefly: ignore [bad-argument-type]
         for i, var in enumerate(self.categorical_idx):
             if self.dim_output_cat[i] == 1:
                 msg = f"Column {var} only has one class, not able to train a model!"
@@ -424,6 +425,7 @@ class MetaLearnHPT:
         # Add output dim at the end of n_hidden_cat_combo.
         # Add output dim at the end of n_hidden_num.
         self.n_hidden_shared = n_hidden_shared
+        # pyrefly: ignore [bad-assignment]
         self.n_hidden_cat_combo = n_hidden_cat_combo
         self.n_hidden_num = n_hidden_num
 
@@ -457,11 +459,13 @@ class MetaLearnHPT:
         # change training set to tensors
         x_fs = torch.from_numpy(self.dataX[train_idx, :]).float()
         y_cat = (
+            # pyrefly: ignore [unsupported-operation]
             torch.from_numpy(self.target_cat[train_idx, :]).long()
             if self.categorical_idx
             else None
         )
         y_num = (
+            # pyrefly: ignore [unsupported-operation]
             torch.from_numpy(self._target_num[train_idx, :].astype("float")).float()
             if self.numerical_idx
             else None
@@ -470,11 +474,13 @@ class MetaLearnHPT:
         # change validation set to tensors
         x_fs_val = torch.from_numpy(self.dataX[val_idx, :]).float()
         y_cat_val = (
+            # pyrefly: ignore [unsupported-operation]
             torch.from_numpy(self.target_cat[val_idx, :]).long()
             if self.categorical_idx
             else None
         )
         y_num_val = (
+            # pyrefly: ignore [unsupported-operation]
             torch.from_numpy(self._target_num[val_idx, :].astype("float")).float()
             if self.numerical_idx
             else None
@@ -595,7 +601,9 @@ class MetaLearnHPT:
                 total_loss += cur_loss
 
             # Record loss of training set at the last iteration of each epoch.
+            # pyrefly: ignore [unbound-name]
             self._loss_path["LOSS_train_cat"].append(loss_cat_train.item())
+            # pyrefly: ignore [unbound-name]
             self._loss_path["LOSS_train_num"].append(loss_num_train.item())
 
             # Record loss of validatiaon set for each epoch.
@@ -717,11 +725,14 @@ class MetaLearnHPT:
         nums = nums.detach().numpy() if nums is not None else []
 
         ans = [{} for _ in range(n)]
+        # pyrefly: ignore [bad-argument-type]
         for j, c in enumerate(self.categorical_idx):
             vals = cats[j]
             for i in range(n):
                 ans[i][c] = self.cat_code_dict[c][vals[i]]
+        # pyrefly: ignore [bad-argument-type]
         for j, c in enumerate(self.numerical_idx):
+            # pyrefly: ignore [bad-index]
             vals = nums[:, j]
             for i in range(n):
                 ans[i][c] = vals[i]

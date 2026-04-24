@@ -29,6 +29,7 @@ from kats.models.ensemble.median_ensemble import MedianEnsembleModel
 from kats.models.ensemble.weighted_avg_ensemble import WeightedAvgEnsemble
 from parameterized.parameterized import parameterized
 
+# pyrefly: ignore [bad-argument-type]
 np.random.seed(123321)
 DATA_dummy = pd.DataFrame(
     {
@@ -546,6 +547,7 @@ class testKatsEnsemble(TestCase):
             "decomposition_method": "random_decomp",
         }
         # test invalid decomposition method
+        # pyrefly: ignore [bad-argument-type]
         m = KatsEnsemble(data=self.TSData, params=KatsEnsembleParam)
         m.validate_params()
 
@@ -574,6 +576,7 @@ class testKatsEnsemble(TestCase):
             "forecastExecutor": None,
         }
         with self.assertLogs(level="INFO"):
+            # pyrefly: ignore [bad-argument-type]
             m = KatsEnsemble(data=self.TSData, params=KatsEnsembleParam)
 
         # test non-seasonal data

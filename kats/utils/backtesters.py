@@ -234,6 +234,7 @@ class GenericBacktester(ABC):
                 tmp_all_res = self._fit_and_scorer(train, test)
                 all_res.append(tmp_all_res)
         logging.info("Successfully finish evaluating models on all partitions.")
+        # pyrefly: ignore [bad-argument-type]
         self.backtest_result = self._summarize(all_res)
         return None
 

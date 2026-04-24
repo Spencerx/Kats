@@ -51,6 +51,8 @@ import numpy.typing as npt
 import pandas as pd
 from kats.consts import TimeSeriesChangePoint, TimeSeriesData
 from kats.detectors.detector import Detector
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import chi2  # @manual
 
 pd.options.plotting.matplotlib.register_converters = True
@@ -243,6 +245,7 @@ class CUSUMChangePoint(TimeSeriesChangePoint):
             f"p_value: {self._p_value}, p_value_int: {self._p_value_int})"
         )
 
+    # pyrefly: ignore [bad-override]
     def __eq__(self, other: TimeSeriesChangePoint) -> bool:
         if not isinstance(other, CUSUMChangePoint):
             # don't attempt to compare against unrelated types
@@ -1124,6 +1127,7 @@ class VectorizedCUSUMDetector(CUSUMDetector):
                     and mag_change
                 )
 
+                # pyrefly: ignore [unsupported-operation]
                 changes_meta_multi[change_direction][col_idx] = asdict(change_meta)
 
         # pyre-ignore
@@ -1422,5 +1426,6 @@ class VectorizedCUSUMDetector(CUSUMDetector):
             delta=mu1 - mu0,
             llr_int=llr_int,
             p_value_int=pval_int,
+            # pyrefly: ignore [bad-argument-type]
             delta_int=delta_int,
         )

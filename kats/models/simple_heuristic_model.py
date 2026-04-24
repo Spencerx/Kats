@@ -78,6 +78,7 @@ class SimpleHeuristicModel(Model[SimpleHeuristicModelParams]):
     y_fcst: Optional[npt.NDArray] = None
     y_fcst_lower: Optional[npt.NDArray] = None
     y_fcst_upper: Optional[npt.NDArray] = None
+    # pyrefly: ignore [bad-override]
     fcst_df: pd.DataFrame = pd.DataFrame(data=None)
     freq: Optional[str] = None
 
@@ -185,6 +186,7 @@ class SimpleHeuristicModel(Model[SimpleHeuristicModelParams]):
 
         # pyre-fixme[16]: `Optional` has no attribute `value`.
         fitted_len = (len(self.data.value) // steps) * steps
+        # pyrefly: ignore [missing-attribute]
         fitted_values_s = self.data.value[-fitted_len:]
         fitted_values = np.reshape(np.asarray(fitted_values_s), [-1, steps])
 
@@ -193,6 +195,7 @@ class SimpleHeuristicModel(Model[SimpleHeuristicModelParams]):
         self.y_fcst_upper = self.y_fcst
 
         # create future dates
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=self.freq)
         self.dates = dates[dates != last_date]

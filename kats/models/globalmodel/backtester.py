@@ -206,6 +206,7 @@ class GMBackTester:
                 ts = ts[ts.time >= self.earliest_timestamp]
             ts = fill_missing_value_na(ts, sasonality, freq)
             ans[i] = ts
+        # pyrefly: ignore [bad-return]
         return ans
 
     # pyre-fixme[3]: Return annotation cannot contain `Any`.
@@ -238,11 +239,13 @@ class GMBackTester:
         # get last backtesting timestamp
         if not isinstance(backtest_ts, pd.Timestamp):
             try:
+                # pyrefly: ignore [bad-assignment]
                 backtest_ts = pd.Timestamp(backtest_ts)
             except Exception as e:
                 msg = f"Fail to convert backtesting timestamp with error message {e}."
                 logging.error(msg)
                 raise ValueError(msg)
+        # pyrefly: ignore [unsupported-operation]
         last_timestamp = backtest_ts + self.max_back_test_timedelta
 
         train_length = (
@@ -305,6 +308,7 @@ class GMBackTester:
             Random seed.
         """
         if random_seed is not None:
+            # pyrefly: ignore [bad-argument-type]
             np.random.seed(random_seed)
             torch.manual_seed(random_seed)
             # to ensure performance
@@ -335,9 +339,13 @@ class GMBackTester:
         evaluation_collects = []
 
         for bt in self.backtest_timestamp:
+            # pyrefly: ignore [bad-argument-type]
             bt_train_TSs, bt_valid_TSs = self._filter(all_train_TSs, bt, "train")
             bt_test_train_TSs, bt_test_valid_TSs = self._filter(
-                all_test_TSs, bt, "test"
+                # pyrefly: ignore [bad-argument-type]
+                all_test_TSs,
+                bt,
+                "test",
             )
             bt_info[bt] = {
                 "num_train_TSs": len(bt_train_TSs),
@@ -618,6 +626,7 @@ class GMBackTesterExpandingWindow(BackTesterExpandingWindow):
             truth = truth[~np.isnan(truth)]
             results.append((train_data, truth, None, fcst))
 
+        # pyrefly: ignore [bad-assignment]
         self.results = results
 
         return

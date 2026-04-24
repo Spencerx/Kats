@@ -75,11 +75,14 @@ class DecompositionTest(TestCase):
             self.ts_data_nonstandard_name.time_col_name,
         )
         self.assertEqual(
+            # pyrefly: ignore [unsupported-operation]
             m.results["seasonal"].time_col_name,
             self.ts_data_nonstandard_name.time_col_name,
         )
         self.assertEqual(
-            m.results["rem"].time_col_name, self.ts_data_nonstandard_name.time_col_name
+            # pyrefly: ignore [unsupported-operation]
+            m.results["rem"].time_col_name,
+            self.ts_data_nonstandard_name.time_col_name,
         )
 
     def test_decomposition_additive(self) -> None:
@@ -355,6 +358,7 @@ class DecompositionTest(TestCase):
         df_15_min["time"] = list(
             pd.date_range(end="2020-02-01", periods=df_15_min.shape[0], freq="25T")
         )
+        # pyrefly: ignore [missing-attribute]
         df_15_min["time"] = df_15_min["time"].astype("str")
         df_15_min.columns = ["time", "y"]
 
@@ -606,6 +610,7 @@ class KDEResidualTranslatorTest(TestCase):
         ks = ks_2samp(
             # pyre-fixme [16]: Optional type has no attribute `sample`
             trn.kde_.sample(len(self._residual)).flatten(),
+            # pyrefly: ignore [bad-argument-type]
             self._residual.value,
         )
         self.assertTrue(ks.statistic < 0.1 or ks.pvalue >= 0.2)
@@ -615,6 +620,7 @@ class SimulatorTest(TestCase):
     def test_arima_sim(self) -> None:
         sim = Simulator(n=10, freq="MS", start=pd.to_datetime("2011-01-01 00:00:00"))
 
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         ts = sim.arima_sim(ar=[0.1, 0.05], ma=[0.04, 0.1], d=1)
 
@@ -638,6 +644,7 @@ class SimulatorTest(TestCase):
     def test_stl_sim_additive(self) -> None:
         # Create a STL-based simulated object
         sim = Simulator(n=100, freq="1D", start=pd.to_datetime("2011-01-01"))
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(614)
         sim.add_trend(magnitude=10)
         sim.add_seasonality(5, period=timedelta(days=7))
@@ -647,6 +654,7 @@ class SimulatorTest(TestCase):
         # the original simulated data
         generator1 = Simulator(n=100, freq="D", start="2011-01-01")
         generator1.add_trend(magnitude=10)
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(614)
         generator1.add_seasonality(magnitude=5, period=timedelta(days=7))
         generator1.add_noise(magnitude=2)
@@ -658,6 +666,7 @@ class SimulatorTest(TestCase):
     def test_stl_sim_multiplicative(self) -> None:
         # Create a STL-based simulated object
         sim = Simulator(n=100, freq="1D", start=pd.to_datetime("2011-01-01"))
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(614)
         sim.add_trend(magnitude=5, multiply=True)
         sim.add_seasonality(10, period=timedelta(days=14))
@@ -667,6 +676,7 @@ class SimulatorTest(TestCase):
         # the original simulated data
         generator2 = Simulator(n=100, freq="D", start="2011-01-01")
         generator2.add_trend(magnitude=5, multiply=True)
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(614)
         generator2.add_seasonality(magnitude=10, period=timedelta(days=14))
         generator2.add_noise(magnitude=1, multiply=True)

@@ -38,6 +38,7 @@ def mean_confidence_interval(
     dof = len(data)
     # calculate mean and std
     m, se = np.mean(data), np.std(data)
+    # pyrefly: ignore [missing-attribute]
     h = se * scipy.stats.t.ppf((1 + confidence) / 2.0, dof - 1)
     return m, m - h, m + h
 

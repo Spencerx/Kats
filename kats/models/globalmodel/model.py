@@ -72,9 +72,12 @@ class GMModel:
 
     def _reset_nn_states(self) -> None:
         if self.params.model_type == "rnn":
+            # pyrefly: ignore [missing-attribute]
             self.rnn.reset_state()
         elif self.params.model_type == "s2s":
+            # pyrefly: ignore [missing-attribute]
             self.encoder.reset_state()
+            # pyrefly: ignore [missing-attribute]
             self.decoder.reset_state()
         else:
             msg = "Not implemented."
@@ -96,8 +99,10 @@ class GMModel:
     #  `typing.List` to avoid runtime subscripting errors.
     def _get_nn_parameters(self) -> Union[Generator, List]:
         if self.params.model_type == "rnn":
+            # pyrefly: ignore [missing-attribute]
             return self.rnn.parameters()
         elif self.params.model_type == "s2s":
+            # pyrefly: ignore [missing-attribute]
             return list(self.encoder.parameters()) + list(self.decoder.parameters())
         else:
             msg = "Not implemented."
@@ -106,15 +111,21 @@ class GMModel:
     def _set_nn_status(self, mode: str) -> None:
         if self.params.model_type == "rnn":
             if mode == "train":
+                # pyrefly: ignore [missing-attribute]
                 self.rnn.train()
             elif mode == "test":
+                # pyrefly: ignore [missing-attribute]
                 self.rnn.eval()
         elif self.params.model_type == "s2s":
             if mode == "train":
+                # pyrefly: ignore [missing-attribute]
                 self.encoder.train()
+                # pyrefly: ignore [missing-attribute]
                 self.decoder.train()
             elif mode == "test":
+                # pyrefly: ignore [missing-attribute]
                 self.encoder.eval()
+                # pyrefly: ignore [missing-attribute]
                 self.decoder.eval()
         else:
             msg = "Not implemented."
@@ -637,6 +648,7 @@ class GMModel:
                 }
                 fcst_collects.update(tmp)
 
+        # pyrefly: ignore [bad-return]
         return fcst_collects
 
     def save_model(self, file_name: str) -> None:
@@ -838,6 +850,7 @@ class GMModel:
     ) -> Tuple[List[Any], List[Any], List[Any], Dict[Any, List[Any]]]:
         if params.model_type == "rnn":
             return self._single_pass_rnn(
+                # pyrefly: ignore [bad-argument-type]
                 self.rnn,
                 params,
                 batch,
@@ -848,7 +861,9 @@ class GMModel:
             )
         elif params.model_type == "s2s":
             return self._single_pass_s2s(
+                # pyrefly: ignore [bad-argument-type]
                 self.encoder,
+                # pyrefly: ignore [bad-argument-type]
                 self.decoder,
                 params,
                 batch,
@@ -915,6 +930,7 @@ class GMModel:
             logging.error(msg)
             raise ValueError(msg)
 
+        # pyrefly: ignore [bad-index]
         steps = np.max([len(test_valid_TSs[t]) for t in keys])
 
         fcst = self.predict(test_train_TSs, steps=steps, raw=True)
@@ -1225,6 +1241,7 @@ class GMModel:
             cur_training_loss = torch.sum(loss_func(fcst, actuals))
         elif is_valid:
             # restoring to original scale
+            # pyrefly: ignore [bad-assignment]
             fcst = (torch.exp(fcst).detach() - batch.offset).numpy()
             if training_mode:  # get evaluated performance on validation set
                 actuals = (
@@ -1259,10 +1276,13 @@ def load_gmmodel_from_file(file_name: str) -> GMModel:
         gmmodel = GMModel(gmparam)
         if gmparam.model_type == "rnn":
             gmmodel.build_rnn()
+            # pyrefly: ignore [missing-attribute]
             gmmodel.rnn.load_state_dict(info["state_dict"])
         elif gmparam.model_type == "s2s":
             gmmodel.build_s2s()
+            # pyrefly: ignore [missing-attribute]
             gmmodel.encoder.load_state_dict(info["encoder_state_dict"])
+            # pyrefly: ignore [missing-attribute]
             gmmodel.decoder.load_state_dict(info["decoder_state_dict"])
 
         logging.info(f"Successfully load global model from {file_name}.")

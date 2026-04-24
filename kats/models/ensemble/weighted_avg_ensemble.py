@@ -78,6 +78,7 @@ class WeightedAvgEnsemble(ensemble.BaseEnsemble):
 
         bt = BackTesterSimple(
             [err_method],
+            # pyrefly: ignore [bad-argument-type]
             self.data,
             params,
             train_percentage,
@@ -155,6 +156,7 @@ class WeightedAvgEnsemble(ensemble.BaseEnsemble):
         self.fcst_weighted = fcst_all.dot(np.array(list(weights.values())))
 
         # create future dates
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=freq)
         dates = dates[dates != last_date]

@@ -115,7 +115,11 @@ def LAG(df: pd.DataFrame, n: int, column: str = "y") -> pd.DataFrame:
 
 
 def MACD(
-    df: pd.DataFrame, n_fast: int = 12, n_slow: int = 21, column: str = "y"
+    df: pd.DataFrame,
+    n_fast: int = 12,
+    n_slow: int = 21,
+    column: str = "y",
+    # pyrefly: ignore [bad-return]
 ) -> pd.DataFrame:
     """Adds three columns indicating MACD: https://www.investopedia.com/terms/m/macd.asp.
 

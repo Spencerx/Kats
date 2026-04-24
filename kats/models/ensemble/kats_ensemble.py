@@ -122,6 +122,7 @@ class KatsEnsemble(Model):
 
         # validate m
         if (self.params["seasonality_length"] is not None) and (
+            # pyrefly: ignore [missing-attribute]
             self.params["seasonality_length"] > int(len(self.data.time) // 2)
         ):
             msg = "seasonality_length value cannot be larger than"
@@ -340,6 +341,7 @@ class KatsEnsemble(Model):
         This is the fit methdo to fit individual forecasting model
         """
 
+        # pyrefly: ignore [bad-argument-type]
         self.seasonality = KatsEnsemble.seasonality_detector(self.data)
 
         # check if self.params["seasonality_length"] is given
@@ -359,7 +361,9 @@ class KatsEnsemble(Model):
         if self.seasonality:
             # STL decomposition
             sea_data, desea_data = KatsEnsemble.deseasonalize(
-                self.data, self.decomposition_method
+                # pyrefly: ignore [bad-argument-type]
+                self.data,
+                self.decomposition_method,
             )
             self.sea_data = sea_data
             self.desea_data = desea_data
@@ -471,6 +475,7 @@ class KatsEnsemble(Model):
             Tuple of predicted values and weights
         """
         self.steps = steps
+        # pyrefly: ignore [bad-argument-type]
         self.seasonality = KatsEnsemble.seasonality_detector(self.data)
 
         # check if self.params["seasonality_length"] is given
@@ -485,7 +490,9 @@ class KatsEnsemble(Model):
         if self.seasonality:
             # call forecastExecutor and move to next steps
             sea_data, desea_data = KatsEnsemble.deseasonalize(
-                self.data, self.decomposition_method
+                # pyrefly: ignore [bad-argument-type]
+                self.data,
+                self.decomposition_method,
             )
             self.sea_data = sea_data
             self.desea_data = desea_data
@@ -519,6 +526,7 @@ class KatsEnsemble(Model):
 
             model_params = EnsembleParams(extra_models)
             extra_predict, extra_error = self.forecastExecutor(
+                # pyrefly: ignore [bad-argument-type]
                 data=self.data,
                 models=model_params,
                 steps=self.steps,
@@ -540,6 +548,7 @@ class KatsEnsemble(Model):
         else:
             # no seasonality detected
             predicted, forecast_error = self.forecastExecutor(
+                # pyrefly: ignore [bad-argument-type]
                 data=self.data,
                 models=self.params["models"],
                 steps=self.steps,
@@ -626,6 +635,7 @@ class KatsEnsemble(Model):
         # simply predict with given steps
         predicted = {}
         for model_name, model_fitted in fitted.items():
+            # pyrefly: ignore [missing-attribute]
             predicted[model_name] = model_fitted.predict(steps).set_index("time")
 
         # if auto back testing
@@ -651,6 +661,7 @@ class KatsEnsemble(Model):
             raise _logged_error("predict must be called before aggregate.")
 
         # create future dates
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=self.steps + 1, freq=self.freq)
         self.dates = dates = dates[dates != last_date]
@@ -792,6 +803,7 @@ class KatsEnsemble(Model):
 
         bt = BackTesterSimple(
             [err_method],
+            # pyrefly: ignore [bad-argument-type]
             self.data,
             params,
             train_percentage,

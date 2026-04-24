@@ -116,6 +116,7 @@ class SimpleBackTesterTest(unittest.TestCase):
         # Creating and running backtester for this given model class
         bt = BackTesterSimple(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=model_params,
             train_percentage=PERCENTAGE,
@@ -163,6 +164,7 @@ class SimpleBackTesterTest(unittest.TestCase):
         # Create backtester for this given model class
         bt = BackTesterSimple(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=model_params,
             train_percentage=PERCENTAGE,
@@ -229,6 +231,7 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
         # Create and run backtester
         bt = BackTesterExpandingWindow(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             start_train_percentage=EXPANDING_WINDOW_START,
@@ -245,17 +248,23 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
         self.model_class.assert_has_calls(
             [
                 mock.call(
-                    data=TimeSeriesData(self.train_folds[0]), params=self.model_params
+                    # pyrefly: ignore [bad-argument-type]
+                    data=TimeSeriesData(self.train_folds[0]),
+                    params=self.model_params,
                 ),
                 mock.call().fit(),
                 mock.call().predict(steps=TIMESTEPS, freq=FREQUENCY),
                 mock.call(
-                    data=TimeSeriesData(self.train_folds[1]), params=self.model_params
+                    # pyrefly: ignore [bad-argument-type]
+                    data=TimeSeriesData(self.train_folds[1]),
+                    params=self.model_params,
                 ),
                 mock.call().fit(),
                 mock.call().predict(steps=TIMESTEPS, freq=FREQUENCY),
                 mock.call(
-                    data=TimeSeriesData(self.train_folds[2]), params=self.model_params
+                    # pyrefly: ignore [bad-argument-type]
+                    data=TimeSeriesData(self.train_folds[2]),
+                    params=self.model_params,
                 ),
             ]
         )
@@ -279,7 +288,9 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
             train_fold = self.train_folds[i]
             test_fold = self.test_folds[i]
             temp_model = self.model_class(
-                data=TimeSeriesData(train_fold), params=self.model_params
+                # pyrefly: ignore [bad-argument-type]
+                data=TimeSeriesData(train_fold),
+                params=self.model_params,
             )
             temp_model.fit()
 
@@ -288,12 +299,15 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
 
             # Using model predictions from local_model to calculate true errors
             pred = np.array(temp_fcst["fcst"])
+            # pyrefly: ignore [bad-index]
             truth = np.array(test_fold["y"])
+            # pyrefly: ignore [bad-index]
             train = np.array(train_fold["y"])
             compute_errors_list(train, pred, truth, true_errors)
 
         # Calculating errors
         for error_name, values in true_errors.items():
+            # pyrefly: ignore [unsupported-operation]
             true_errors[error_name] = statistics.mean(values)
         ground_truth_errors = (bt, true_errors)
 
@@ -301,6 +315,7 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
         backtester, error_results = ground_truth_errors
         for error_name, value in error_results.items():
             self.assertEqual(
+                # pyrefly: ignore [no-matching-overload]
                 round(value, FLOAT_ROUNDING_PARAM),
                 round(backtester.errors[error_name], FLOAT_ROUNDING_PARAM),
             )
@@ -314,6 +329,7 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
         # Calculate folds from Expanding Window Backtester
         expanding_backtester = BackTesterExpandingWindow(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             start_train_percentage=PERCENTAGE,
@@ -328,6 +344,7 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
         # Calculate folds from Simple Backtester
         simple_backtester = BackTesterSimple(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             train_percentage=PERCENTAGE,
@@ -377,6 +394,7 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
             with self.assertRaises(ValueError) as e:
                 BackTesterExpandingWindow(
                     error_methods=ALL_ERRORS,
+                    # pyrefly: ignore [bad-argument-type]
                     data=self.TSData,
                     params=self.model_params,
                     start_train_percentage=start_train_p,
@@ -401,6 +419,7 @@ class ExpandingWindowBackTesterTest(unittest.TestCase):
         # Create backtester for this given model class
         bt = BackTesterExpandingWindow(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             start_train_percentage=EXPANDING_WINDOW_START,
@@ -499,6 +518,7 @@ class RollingWindowBackTesterTest(unittest.TestCase):
         # Create and run backtester
         bt = BackTesterRollingWindow(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             train_percentage=ROLLING_WINDOW_TRAIN,
@@ -514,17 +534,23 @@ class RollingWindowBackTesterTest(unittest.TestCase):
         self.model_class.assert_has_calls(
             [
                 mock.call(
-                    data=TimeSeriesData(self.train_folds[0]), params=self.model_params
+                    # pyrefly: ignore [bad-argument-type]
+                    data=TimeSeriesData(self.train_folds[0]),
+                    params=self.model_params,
                 ),
                 mock.call().fit(),
                 mock.call().predict(steps=TIMESTEPS, freq=FREQUENCY),
                 mock.call(
-                    data=TimeSeriesData(self.train_folds[1]), params=self.model_params
+                    # pyrefly: ignore [bad-argument-type]
+                    data=TimeSeriesData(self.train_folds[1]),
+                    params=self.model_params,
                 ),
                 mock.call().fit(),
                 mock.call().predict(steps=TIMESTEPS, freq=FREQUENCY),
                 mock.call(
-                    data=TimeSeriesData(self.train_folds[2]), params=self.model_params
+                    # pyrefly: ignore [bad-argument-type]
+                    data=TimeSeriesData(self.train_folds[2]),
+                    params=self.model_params,
                 ),
             ]
         )
@@ -548,7 +574,9 @@ class RollingWindowBackTesterTest(unittest.TestCase):
             train_fold = self.train_folds[i]
             test_fold = self.test_folds[i]
             temp_model = self.model_class(
-                data=TimeSeriesData(train_fold), params=self.model_params
+                # pyrefly: ignore [bad-argument-type]
+                data=TimeSeriesData(train_fold),
+                params=self.model_params,
             )
             temp_model.fit()
 
@@ -557,12 +585,15 @@ class RollingWindowBackTesterTest(unittest.TestCase):
 
             # Using model predictions from local_model to calculate true errors
             pred = np.array(temp_fcst["fcst"])
+            # pyrefly: ignore [bad-index]
             truth = np.array(test_fold["y"])
+            # pyrefly: ignore [bad-index]
             train = np.array(train_fold["y"])
             compute_errors_list(train, pred, truth, true_errors)
 
         # Calculating errors
         for error_name, values in true_errors.items():
+            # pyrefly: ignore [unsupported-operation]
             true_errors[error_name] = statistics.mean(values)
         ground_truth_errors = (bt, true_errors)
 
@@ -570,6 +601,7 @@ class RollingWindowBackTesterTest(unittest.TestCase):
         backtester, error_results = ground_truth_errors
         for error_name, value in error_results.items():
             self.assertEqual(
+                # pyrefly: ignore [no-matching-overload]
                 round(value, FLOAT_ROUNDING_PARAM),
                 round(backtester.errors[error_name], FLOAT_ROUNDING_PARAM),
             )
@@ -583,6 +615,7 @@ class RollingWindowBackTesterTest(unittest.TestCase):
         # Calculate folds from Rolling Window Backtester
         rolling_backtester = BackTesterRollingWindow(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             train_percentage=PERCENTAGE,
@@ -596,6 +629,7 @@ class RollingWindowBackTesterTest(unittest.TestCase):
         # Calculate folds from Simple Backtester
         simple_backtester = BackTesterSimple(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             train_percentage=PERCENTAGE,
@@ -673,6 +707,7 @@ class FixedWindowBackTesterTest(unittest.TestCase):
         # Creating and running backtester for this given model class
         bt = BackTesterFixedWindow(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=model_params,
             train_percentage=FIXED_WINDOW_TRAIN_PERCENTAGE,
@@ -732,6 +767,7 @@ class FixedWindowBackTesterTest(unittest.TestCase):
             with self.assertRaises(ValueError) as e:
                 BackTesterFixedWindow(
                     error_methods=ALL_ERRORS,
+                    # pyrefly: ignore [bad-argument-type]
                     data=self.TSData,
                     params=model_params,
                     train_percentage=train_p,
@@ -760,6 +796,7 @@ class FixedWindowBackTesterTest(unittest.TestCase):
         # Creating and running backtester for this given model class
         bt = BackTesterFixedWindow(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=model_params,
             train_percentage=FIXED_WINDOW_TRAIN_PERCENTAGE,
@@ -856,11 +893,13 @@ class CrossValidationTest(unittest.TestCase):
 
         # Calculate average error across folds
         for error_name, values in true_errors.items():
+            # pyrefly: ignore [unsupported-operation]
             true_errors[error_name] = statistics.mean(values)
 
         # Creating and running CV Object for this given model class
         temp_cv = CrossValidation(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             train_percentage=EXPANDING_WINDOW_START,
@@ -911,6 +950,7 @@ class CrossValidationTest(unittest.TestCase):
         cv, error_results = expanding_cv_results
         for error_name, value in error_results.items():
             self.assertEqual(
+                # pyrefly: ignore [no-matching-overload]
                 round(value, FLOAT_ROUNDING_PARAM),
                 round(cv.errors[error_name], FLOAT_ROUNDING_PARAM),
             )
@@ -973,11 +1013,13 @@ class CrossValidationTest(unittest.TestCase):
 
         # Calculate average error across folds
         for error_name, values in true_errors.items():
+            # pyrefly: ignore [unsupported-operation]
             true_errors[error_name] = statistics.mean(values)
 
         # Creating and running CV Object for this given model class
         temp_cv = CrossValidation(
             error_methods=ALL_ERRORS,
+            # pyrefly: ignore [bad-argument-type]
             data=self.TSData,
             params=self.model_params,
             train_percentage=ROLLING_WINDOW_TRAIN,
@@ -1028,6 +1070,7 @@ class CrossValidationTest(unittest.TestCase):
         cv, error_results = rolling_cv_results
         for error_name, value in error_results.items():
             self.assertEqual(
+                # pyrefly: ignore [no-matching-overload]
                 round(value, FLOAT_ROUNDING_PARAM),
                 round(cv.errors[error_name], FLOAT_ROUNDING_PARAM),
             )
@@ -1052,6 +1095,7 @@ class CrossValidationTest(unittest.TestCase):
             with self.assertRaises(ValueError) as e:
                 CrossValidation(
                     error_methods=ALL_ERRORS,
+                    # pyrefly: ignore [bad-argument-type]
                     data=self.TSData,
                     params=self.model_params,
                     train_percentage=train_p,

@@ -122,6 +122,7 @@ class TimeSeriesDecomposition:
         if self.data.infer_freq_robust() is None:
             original = original.asfreq("D")
             logging.info("Setting frequency to Daily since it cannot be inferred")
+            # pyrefly: ignore [bad-argument-type]
             self.freq = pd.infer_freq(original.index)
         else:
             self.freq = self.data.infer_freq_robust()
@@ -202,6 +203,7 @@ class TimeSeriesDecomposition:
             low_pass_jump=self.low_pass_jump,
         ).fit()
 
+        # pyrefly: ignore [bad-return]
         return {
             "trend": post_transform(result.trend),
             "seasonal": post_transform(result.seasonal),

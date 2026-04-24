@@ -157,6 +157,7 @@ class ThetaModelTest(TestCase):
         freq: Optional[str],
         truth: pd.DataFrame,
     ) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(0)
         m = ThetaModel(data=ts, params=params)
         m.fit()

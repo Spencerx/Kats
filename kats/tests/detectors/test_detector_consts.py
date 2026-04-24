@@ -34,6 +34,7 @@ class SingleSpikeTest(TestCase):
 class UnivariateChangePointIntervalTest(TestCase):
     # test for univariate time series
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
 
         date_start_str = "2020-03-01"
@@ -129,10 +130,12 @@ class UnivariateChangePointIntervalTest(TestCase):
 
     # check spike detection
     def test_spike_start_value(self) -> None:
+        # pyrefly: ignore [missing-attribute]
         self.assertEqual(self.spike_list[0].value, 100.0)
 
     def test_spike_start_time_str(self) -> None:
         self.assertEqual(
+            # pyrefly: ignore [missing-attribute]
             self.spike_list[0].time_str,
             self.current_start_time_str,
         )
@@ -141,6 +144,7 @@ class UnivariateChangePointIntervalTest(TestCase):
 class MultivariateChangePointIntervalTest(TestCase):
     # test for multivariate time series
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
 
         date_start_str = "2020-03-01"
@@ -319,11 +323,13 @@ class MultivariateChangePointIntervalTest(TestCase):
 
     def check_spike_array_value(self) -> None:
         for i in range(self.num_seq):
+            # pyrefly: ignore [bad-index]
             self.assertEqual(self.spike_array[i][0].value, 100 * (i + 1))
 
     def check_spike_array_time_str(self) -> None:
         for i in range(self.num_seq):
             self.assertEqual(
+                # pyrefly: ignore [bad-index]
                 self.spike_array[i][0].time_str,
                 self.current_start_date_str,
             )
@@ -332,6 +338,7 @@ class MultivariateChangePointIntervalTest(TestCase):
 class UnivariatePercentageChangeTest(TestCase):
     # test for univariate time series
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
 
         date_start_str = "2020-03-01"
@@ -469,6 +476,7 @@ class UnivariatePercentageChangeTest(TestCase):
 class MultivariatePercentageChangeTest(TestCase):
     # test for multivariate time series
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
 
         date_start_str = "2020-03-01"
@@ -671,6 +679,7 @@ class MultivariatePercentageChangeTest(TestCase):
 class TestUnivariateAnomalyResponse(TestCase):
     # test anomaly response for univariate time series
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
 
         date_start_str = "2020-03-01"
@@ -845,6 +854,7 @@ class TestUnivariateAnomalyResponse(TestCase):
     def test_extend(self) -> None:
         extension_len = 10
         shifted_time = self.response.scores.time + (
+            # pyrefly: ignore [unsupported-operation]
             pd.Timedelta(self.response.scores.time[:2].diff()[1].value)
             * len(self.response.scores.time)
         )
@@ -922,6 +932,7 @@ class TestMultivariateAnomalyResponse(TestCase):
     # test anomaly response for multivariate time series
 
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
 
         date_start_str = "2020-03-01"
@@ -1137,6 +1148,7 @@ class TestMultivariateAnomalyResponse(TestCase):
     def test_extend(self) -> None:
         extension_len = 10
         shifted_time = self.response.scores.time + (
+            # pyrefly: ignore [unsupported-operation]
             pd.Timedelta(self.response.scores.time[:2].diff()[1].value)
             * len(self.response.scores.time)
         )

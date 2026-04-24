@@ -14,6 +14,8 @@ import numpy.typing as npt
 import pandas as pd
 from kats.consts import TimeSeriesChangePoint, TimeSeriesData
 from kats.detectors.detector import Detector
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import norm, zscore  # @manual
 
 

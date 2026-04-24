@@ -145,17 +145,23 @@ class TestOutlierDetectorModel(TestCase):
         )
 
         self.assertEqual(
-            response_with_no_interpolate.predicted_ts.time.shape, single_ts.time.shape
+            # pyrefly: ignore [missing-attribute]
+            response_with_no_interpolate.predicted_ts.time.shape,
+            single_ts.time.shape,
         )
         self.assertEqual(
-            response_with_no_interpolate.predicted_ts.value.shape, single_ts.value.shape
+            # pyrefly: ignore [missing-attribute]
+            response_with_no_interpolate.predicted_ts.value.shape,
+            single_ts.value.shape,
         )
 
         self.assertEqual(
+            # pyrefly: ignore [missing-attribute]
             response_with_default_interpolate.predicted_ts.time.shape,
             single_ts.time.shape,
         )
         self.assertEqual(
+            # pyrefly: ignore [missing-attribute]
             response_with_default_interpolate.predicted_ts.value.shape,
             single_ts.value.shape,
         )

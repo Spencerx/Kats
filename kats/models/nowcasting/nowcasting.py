@@ -125,6 +125,7 @@ class NowcastingModel(m.Model):
             self.df = LAG(self.df, n)
             feature_names.append("LAG_" + str(n))
         self.df = self.df[
+            # pyrefly: ignore [bad-argument-count]
             ~self.df.isin([np.nan, np.inf, -np.inf]).any(1)
         ]  # filterout + - inf, nan
         self.feature_names = feature_names
@@ -143,6 +144,7 @@ class NowcastingModel(m.Model):
         """Fits model."""
 
         logging.debug("Call fit() with parameters: step:{step}".format(step=self.step))
+        # pyrefly: ignore [bad-argument-count]
         train_index = self.df[~self.df.isin([np.nan, np.inf, -np.inf]).any(1)].index
         X_train, y_train = (
             self.df[self.feature_names].loc[train_index],

@@ -55,8 +55,10 @@ class VARParams(Params):
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__()
+        # pyrefly: ignore [bad-assignment]
         self.maxlags: int = kwargs.get("maxlags", None)
         self.method: str = kwargs.get("method", "ols")
+        # pyrefly: ignore [bad-assignment]
         self.ic: str = kwargs.get("ic", None)
         self.verbose: bool = kwargs.get("verbose", False)
         self.trend: str = kwargs.get("trend", "c")
@@ -163,6 +165,7 @@ class VARModel(Model[VARParams]):
         logging.info("Generated forecast data from VAR model.")
         logging.debug("Forecast data: {fcst}".format(fcst=fcst))
 
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=self.freq)
         dates = dates[1:]  # Return correct number of periods
@@ -187,6 +190,7 @@ class VARModel(Model[VARParams]):
         if self.include_history:
             try:
                 hist_fcst = model.fittedvalues.values
+                # pyrefly: ignore [missing-attribute]
                 hist_dates = self.data.time.iloc[-len(hist_fcst) :]
                 for i, name in enumerate(ts_names):
                     print(

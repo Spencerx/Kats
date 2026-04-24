@@ -25,12 +25,14 @@ class TestCompat(unittest.TestCase):
 
     @mock.patch("kats.compat.compat.metadata")
     def test_Version_module(self, metadata: object) -> None:
+        # pyrefly: ignore [missing-attribute]
         metadata.version.return_value = "3.11.2"
         result = compat.Version("kats")
         self.assertEqual((3, 11, 2), result.version._key[1])
 
     @mock.patch("kats.compat.compat.metadata")
     def test_Version_module_truncated(self, metadata: object) -> None:
+        # pyrefly: ignore [missing-attribute]
         metadata.version.return_value = "2.3.0"
         result = compat.Version("kats")
         self.assertEqual((2, 3), result.version._key[1])

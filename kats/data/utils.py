@@ -55,6 +55,7 @@ def load_air_passengers(return_ts: Literal[True]) -> TimeSeriesData: ...
 
 
 @overload
+# pyrefly: ignore [inconsistent-overload-default]
 def load_air_passengers(return_ts: Literal[False] = ...) -> pd.DataFrame: ...
 
 

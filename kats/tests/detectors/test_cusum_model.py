@@ -28,6 +28,7 @@ from parameterized.parameterized import parameterized
 
 class TestIncreaseCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         self.scan_window = 24 * 60 * 60  # in seconds
         self.historical_window = 3 * 24 * 60 * 60  # in seconds
@@ -55,11 +56,15 @@ class TestIncreaseCUSUMDetectorModel(TestCase):
 
         self.score_tsd_percentage_change = self.model._predict(
             data=data,
+            # pyrefly: ignore [bad-argument-type]
             score_func=CusumScoreFunction.percentage_change.value,
         ).score
 
         self.score_tsd_z_score = self.model._predict(
-            data=data, score_func=CusumScoreFunction.z_score.value
+            # pyrefly: ignore [bad-argument-type]
+            data=data,
+            # pyrefly: ignore [bad-argument-type]
+            score_func=CusumScoreFunction.z_score.value,
         ).score
 
         self.serialized_model = self.model.serialize()
@@ -138,6 +143,7 @@ class TestIncreaseCUSUMDetectorModel(TestCase):
 
 class TestDecreaseCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         scan_window = 24 * 60 * 60  # in seconds
         historical_window = 3 * 24 * 60 * 60  # in seconds
@@ -162,16 +168,23 @@ class TestDecreaseCUSUMDetectorModel(TestCase):
         ).scores
 
         self.score_tsd = model._predict(
-            data=data, score_func=CusumScoreFunction.change.value
+            # pyrefly: ignore [bad-argument-type]
+            data=data,
+            # pyrefly: ignore [bad-argument-type]
+            score_func=CusumScoreFunction.change.value,
         ).score
 
         self.score_tsd_percentage_change = model._predict(
             data=data,
+            # pyrefly: ignore [bad-argument-type]
             score_func=CusumScoreFunction.percentage_change.value,
         ).score
 
         self.score_tsd_z_score = model._predict(
-            data=data, score_func=CusumScoreFunction.z_score.value
+            # pyrefly: ignore [bad-argument-type]
+            data=data,
+            # pyrefly: ignore [bad-argument-type]
+            score_func=CusumScoreFunction.z_score.value,
         ).score
 
     # pyre-fixme[56]: Pyre was not able to infer the type of the decorator `parameter...
@@ -217,6 +230,7 @@ class TestDecreaseCUSUMDetectorModel(TestCase):
 
 class TestAdhocCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         self.historical_window = 48 * 60 * 60  # in seconds
         self.scan_window = 11 * 60 * 60 + 50  # in seconds
@@ -370,6 +384,7 @@ class TestMissingDataCUSUMDetectorModel(TestCase):
 
 class TestStreamingCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         historical_window = 48 * 60 * 60  # in seconds
         scan_window = 12 * 60 * 60  # in seconds
@@ -420,6 +435,7 @@ class TestStreamingCUSUMDetectorModel(TestCase):
 
 class TestTZAwareDataCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         freq = 86400
         self.historical_window = 48 * freq  # in seconds
@@ -523,6 +539,7 @@ class TestTZAwareDataCUSUMDetectorModel(TestCase):
 
 class TestDecomposingSeasonalityCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         historical_window = 10 * 24 * 60 * 60  # in seconds
         scan_window = 12 * 60 * 60  # in seconds
@@ -619,6 +636,7 @@ class TestDecomposingSeasonalityCUSUMDetectorModel(TestCase):
 
 class TestMissingDataRemoveSeasonalityCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(0)
         x = np.random.normal(0.5, 3, 998)
         time_val0 = list(
@@ -661,6 +679,7 @@ class TestMissingDataRemoveSeasonalityCUSUMDetectorModel(TestCase):
 
 class TestRaiseCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         self.historical_window = 48 * 60 * 60  # in seconds
         self.scan_window = 24 * 60 * 60  # in seconds
@@ -730,6 +749,7 @@ class TestRaiseCUSUMDetectorModel(TestCase):
 
 class TestDeltaReturnCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         self.scan_window = 24 * 60 * 60  # in seconds
         self.historical_window = 3 * 24 * 60 * 60  # in seconds
@@ -773,6 +793,7 @@ class TestDeltaReturnCUSUMDetectorModel(TestCase):
 
 class TestCUSUMDetectorModelWindowsErrors(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         control_time = pd.date_range(start="2018-01-06", freq="D", periods=(100))
         control_val = np.random.normal(0, 5, 100)
@@ -814,6 +835,7 @@ class TestCUSUMDetectorModelWindowsErrors(TestCase):
 
 class TestCUSUMDetectorModelChangeDirection(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         control_time = pd.date_range(start="2018-01-06", freq="D", periods=(100))
         control_val = np.random.normal(0, 5, 100)
@@ -850,6 +872,7 @@ class TestCUSUMDetectorModelChangeDirection(TestCase):
 
 class TestCUSUMDetectorModelIrregularGranularityError(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(100)
         ts_time = list(
             pd.date_range(start="2018-01-06 00:00:00", freq="60s", periods=(100))
@@ -880,12 +903,16 @@ class TestCUSUMDetectorModelIrregularGranularityError(TestCase):
 
 class TestVectorizedCUSUMDetectorModel(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(0)
         val1 = np.random.normal(1, 0.2, 60)
+        # pyrefly: ignore [bad-index, unsupported-operation]
         val1[50:] += 10
         val2 = np.random.normal(1, 0.2, 60)
+        # pyrefly: ignore [bad-index, unsupported-operation]
         val2[40:] += 10
         val3 = np.random.normal(1, 0.2, 60)
+        # pyrefly: ignore [bad-index, unsupported-operation]
         val3[45:] += 10
         self.y = pd.DataFrame(
             {
@@ -1010,10 +1037,14 @@ class TestVectorizedCUSUMDetectorModel(TestCase):
 
 class TestCallVectorizedCUSUM(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(2)
         x = np.random.normal(0, 1, 110)
+        # pyrefly: ignore [bad-index, unsupported-operation]
         x[25:] += 10
+        # pyrefly: ignore [bad-index, unsupported-operation]
         x[50:] += 10
+        # pyrefly: ignore [bad-index, unsupported-operation]
         x[80:] += 10
         freq = 86400
         start_time = pd.Timestamp("2019-01-01").value // 10**9

@@ -176,6 +176,7 @@ class TimeSeriesEvaluationMetric(Metric):
         # Arm evaluation requires mean and standard error or dict for multiple metrics
         evaluation_result = self.evaluation_function(arm.parameters)
         if isinstance(evaluation_result, dict):
+            # pyrefly: ignore [bad-return]
             return [
                 {
                     "metric_name": name,
@@ -819,7 +820,10 @@ class GridSearch(TimeSeriesParameterTuning):
             arm_count = -1
         factorial_run = self._factorial.gen(n=arm_count)
         self.generator_run_for_search_method(
-            evaluation_function=evaluation_function, generator_run=factorial_run
+            # pyrefly: ignore [bad-argument-type]
+            evaluation_function=evaluation_function,
+            # pyrefly: ignore [bad-argument-type]
+            generator_run=factorial_run,
         )
 
 
@@ -911,7 +915,10 @@ class RandomSearch(TimeSeriesParameterTuning):
         """
         model_run = self._random_strategy_model.gen(n=arm_count)
         self.generator_run_for_search_method(
-            evaluation_function=evaluation_function, generator_run=model_run
+            # pyrefly: ignore [bad-argument-type]
+            evaluation_function=evaluation_function,
+            # pyrefly: ignore [bad-argument-type]
+            generator_run=model_run,
         )
 
 
@@ -1024,7 +1031,10 @@ class BayesianOptSearch(TimeSeriesParameterTuning):
             model_run = GeneratorRun(bootstrap_arms_list)
 
         self.generator_run_for_search_method(
-            evaluation_function=evaluation_function, generator_run=model_run
+            # pyrefly: ignore [bad-argument-type]
+            evaluation_function=evaluation_function,
+            # pyrefly: ignore [bad-argument-type]
+            generator_run=model_run,
         )
         self.logger.info(f"fitted data columns: {self._trial_data.df['metric_name']}")
         self.logger.info(f"Bootstrapping of size = {bootstrap_size} is done.")
@@ -1300,6 +1310,7 @@ class NevergradOptSearch(TimeSeriesParameterTuning):
             method_options.outcome_constraints,
             method_options.multiprocessing,
         )
+        # pyrefly: ignore [bad-assignment]
         self.parameters = parameters
         self.inst: ng.p.Instrumentation = get_nevergrad_param_from_ax(
             parameters, get_fixed=method_options.fixed_params_in_space

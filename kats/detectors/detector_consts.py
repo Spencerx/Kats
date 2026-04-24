@@ -16,6 +16,8 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 from kats.consts import TimeSeriesData
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import norm, t, ttest_ind  # @manual
 from statsmodels.stats import multitest
 

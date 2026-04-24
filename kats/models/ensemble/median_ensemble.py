@@ -79,6 +79,7 @@ class MedianEnsembleModel(ensemble.BaseEnsemble):
         self.fcst = fcst_all.median(axis=1)
 
         # create future dates
+        # pyrefly: ignore [missing-attribute]
         last_date = self.data.time.max()
         dates = pd.date_range(start=last_date, periods=steps + 1, freq=freq)
         dates = dates[dates != last_date]

@@ -20,12 +20,15 @@ from kats.detectors.cusum_detection import (
     VectorizedCUSUMDetector,
 )
 from parameterized.parameterized import parameterized
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import chi2  # @manual
 from sklearn.datasets import make_spd_matrix
 
 
 class CUSUMDetectorTest(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
 
         # increasing with variance detection setup
@@ -256,7 +259,9 @@ class CUSUMDetectorTest(TestCase):
 
         lambda_p = 2 * np.pi / float(periodicity)
 
+        # pyrefly: ignore [no-matching-overload]
         gamma_jt = noise_std * np.random.randn((harmonics))
+        # pyrefly: ignore [no-matching-overload]
         gamma_star_jt = noise_std * np.random.randn((harmonics))
 
         total_timesteps = 100 * duration  # Pad for burn in
@@ -303,6 +308,7 @@ class CUSUMDetectorTest(TestCase):
 
     def test_logging_multivariate_error(self) -> None:
         # test multivariate error
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
         df_multi_var = pd.DataFrame(
             {
@@ -329,6 +335,7 @@ class CUSUMDetectorTest(TestCase):
     # pyre-ignore[2]: Parameter must be annotated.
     def test_logging_neg_magnitude(self, level, mag_q) -> None:
         # test logging setup - negative in magnitude
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
         df_neg = pd.DataFrame({"no_change": -np.random.normal(1, 0.2, 60)})
 
@@ -358,6 +365,7 @@ class MultiCUSUMDetectorTest(TestCase):
         # increasing setup
         self.D = 10
         random_state = 10
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(random_state)
         mean1 = np.ones(self.D)
         mean2 = mean1 * 2
@@ -516,6 +524,7 @@ class MultiCUSUMDetectorTest(TestCase):
     def test_no_changepoint(self) -> None:
         D = 10
         random_state = 10
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(random_state)
         mean = np.ones(D)
         sigma = make_spd_matrix(D, random_state=random_state)
@@ -530,6 +539,7 @@ class MultiCUSUMDetectorTest(TestCase):
 
 class VectorizedCUSUMDetectorTest(TestCase):
     def setUp(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(10)
 
         # increasing with variance detection setup
@@ -621,6 +631,7 @@ class VectorizedCUSUMDetectorTest(TestCase):
         return True
 
     def test_vectorized_detector_results(self) -> None:
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(0)
         y = pd.DataFrame(
             {

@@ -220,7 +220,11 @@ class BocpdTrendDetectorModel(DetectorModel):
         )
         # pyre-fixme[28]: Unexpected keyword argument `smoothing_slope`.
         fit1 = exp_smooth.fit(
-            smoothing_level=alpha, smoothing_slope=beta, smoothing_seasonal=gamma
+            # pyrefly: ignore [unexpected-keyword]
+            smoothing_level=alpha,
+            # pyrefly: ignore [unexpected-keyword]
+            smoothing_slope=beta,
+            smoothing_seasonal=gamma,
         )
 
         level_arr = fit1.level

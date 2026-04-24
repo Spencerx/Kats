@@ -36,6 +36,8 @@ import pandas as pd
 from kats.consts import SearchMethodEnum, TimeSeriesChangePoint, TimeSeriesData
 from kats.detectors.detector import Detector
 from scipy.special import logsumexp  # @manual
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import invgamma, linregress, nbinom, norm  # @manual
 
 try:
@@ -1004,9 +1006,11 @@ class _BayesOnlineChangePoint(Detector):
         #  got `Optional[ndarray[Any, dtype[Any]]]`.
         cp_outputs = self._construct_output(threshold=threshold, lag=lag)
         if ts_names is None:
+            # pyrefly: ignore [bad-assignment]
             ts_names = self._ts_names
 
         axs = []
+        # pyrefly: ignore [bad-argument-type]
         for ts_ix, ts_name in enumerate(ts_names):
             cp_output = cp_outputs[ts_name]
             change_points = cp_output["change_points"]
@@ -1594,6 +1598,7 @@ class _BayesianLinReg(_PredictiveModel):
         # this is to make sure the results are consistent
         # and tests don't break randomly
         seed_value = 100
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(seed_value)
 
         # pyre-fixme[24]: Generic type `np.ndarray` expects 2 type parameters.

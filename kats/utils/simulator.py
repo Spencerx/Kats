@@ -20,6 +20,8 @@ import numpy.typing as npt
 import pandas as pd
 from kats.consts import TimeSeriesData
 from pandas.tseries.frequencies import to_offset
+
+# pyrefly: ignore [missing-module-attribute]
 from scipy.stats import norm  # @manual
 
 # A TimedeltaLike object represents a time offset.
@@ -144,12 +146,14 @@ class Simulator:
         x = np.zeros((self.n + pq_max + burnin, 1))
 
         # initialization
+        # pyrefly: ignore [bad-index]
         x[0] = epsilon[0]
 
         for i in range(1, x.shape[0]):
             AR = np.dot(ar[0 : min(i, p_max)], np.flip(x[i - min(i, p_max) : i], 0))
             MA = np.dot(
                 ma[0 : min(i + 1, q_max)],
+                # pyrefly: ignore [bad-index]
                 np.flip(epsilon[i - min(i, q_max - 1) : i + 1], 0),
             )
             x[i] = AR + MA + t
@@ -350,6 +354,7 @@ class Simulator:
         if z_score_arr is None:
             z_score_arr = []
 
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(seed=random_seed)
 
         # if cp_arr is not sorted, sort it
@@ -547,6 +552,7 @@ class Simulator:
                 anomaly_arr,
                 z_score_arr,
             )
+            # pyrefly: ignore [bad-typed-dict-key]
             df_dict[f"value{i + 1}"] = yval
 
         ts_df = pd.DataFrame(df_dict, copy=False)

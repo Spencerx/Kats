@@ -85,6 +85,7 @@ def get_ts(
     """
     Helper function for generating TimeSeriesData.
     """
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(seed)
     t = pd.Series(pd.date_range(start_time, freq=freq, periods=n))
     val = np.random.randn(n)
@@ -1185,6 +1186,7 @@ class HelperFunctionsTest(TestCase):
             freq,
         )
 
+        # pyrefly: ignore [bad-argument-type]
         pad_ts(ts, 1, freq)
 
     # pyre-fixme
@@ -1251,6 +1253,7 @@ class SerializeTest(TestCase):
             # build and initialize GMEnsemble
             gme = GMEnsemble(gmparam, splits=2, replicate=1)
             [t._initiate_nn() for t in gme.gm_models]
+            # pyrefly: ignore [bad-argument-type]
             models.append(gme)
 
         for m in models:

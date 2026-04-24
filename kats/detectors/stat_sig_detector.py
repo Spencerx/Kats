@@ -127,8 +127,11 @@ class StatSigDetectorModel(DetectorModel):
             )
 
         else:
+            # pyrefly: ignore [bad-assignment]
             self.n_test: Optional[int] = n_test
+            # pyrefly: ignore [bad-assignment]
             self.n_control: Optional[int] = n_control
+            # pyrefly: ignore [bad-assignment]
             self.time_unit: Optional[str] = time_unit
             # for seasonality
             self.rem_season: bool = rem_season
@@ -412,12 +415,14 @@ class StatSigDetectorModel(DetectorModel):
             test_end_dt = data.time[i]
 
             assert self.n_test is not None
+            # pyrefly: ignore [unsupported-operation]
             test_start_dt = test_end_dt - (self.n_test - 1) * pd.Timedelta(
                 self.time_unit
             )
 
             control_end_dt = test_start_dt
             assert self.n_control is not None
+            # pyrefly: ignore [unsupported-operation]
             control_start_dt = control_end_dt - self.n_control * pd.Timedelta(
                 self.time_unit
             )
@@ -718,6 +723,7 @@ class StatSigDetectorModel(DetectorModel):
 
         return end_time >= (
             start_time
+            # pyrefly: ignore [unsupported-operation]
             + (self.n_control + self.n_test - 1) * pd.Timedelta(self.time_unit)
         )
 
@@ -738,6 +744,7 @@ class StatSigDetectorModel(DetectorModel):
         if historical_data:
             history_first = historical_data.time.iloc[0]
             history_last = historical_data.time.iloc[-1]
+            # pyrefly: ignore [unsupported-operation]
             min_history_last = history_first + num_hist_points * pd.Timedelta(
                 self.time_unit
             )
@@ -754,6 +761,7 @@ class StatSigDetectorModel(DetectorModel):
 
         first_dt = total_data.time.iloc[0]  # first date of the data
 
+        # pyrefly: ignore [unsupported-operation]
         last_dt = first_dt + num_hist_points * pd.Timedelta(self.time_unit)
 
         historical_data = TimeSeriesData(
@@ -843,10 +851,12 @@ class StatSigDetectorModel(DetectorModel):
         test_end_dt = last_dt + pd.Timedelta(self.time_unit)
 
         assert self.n_test is not None
+        # pyrefly: ignore [unsupported-operation]
         test_start_dt = test_end_dt - self.n_test * pd.Timedelta(self.time_unit)
 
         assert self.n_test is not None
         assert self.n_control is not None
+        # pyrefly: ignore [unsupported-operation]
         control_start_dt = test_end_dt - (self.n_test + self.n_control) * pd.Timedelta(
             self.time_unit
         )

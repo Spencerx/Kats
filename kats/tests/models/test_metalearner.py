@@ -94,6 +94,7 @@ feature_names: List[str] = list(METALEARNING_TEST_T1_FEATURES.keys())
 # pyre-fixme[2]: Parameter must be annotated.
 def generate_meta_data(n):
     # generate meta data to initialize MetaLearnModelSelect
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(560)
     random.seed(560)
     spaces = {m: model.get_parameter_search_space() for m, model in base_models.items()}
@@ -104,6 +105,7 @@ def generate_meta_data(n):
     generators = {}
     for m, space in spaces.items():
         search_space = SearchSpace(
+            # pyrefly: ignore [bad-argument-type]
             [InstantiationBase.parameter_from_json(item) for item in space]
         )
         experiment = Experiment(
@@ -136,6 +138,7 @@ def generate_meta_data(n):
 # pyre-fixme[2]: Parameter must be annotated.
 def generate_meta_data_by_model(model, n, d=num_features):
     random.seed(560)
+    # pyrefly: ignore [bad-argument-type]
     np.random.seed(560)
     model = model.lower()
     if model in base_models:
@@ -481,6 +484,7 @@ class MetaLearnHPTTest(TestCase):
             # pyre-ignore[6]: tsfeatures_params is not a positional arg
             _ = mlhpt.pred(t2, **tsfeatures_params)
             mlhpt.pred_by_feature(feature1)
+            # pyrefly: ignore [bad-argument-type]
             mlhpt.pred_by_feature(feature2)
             mlhpt.pred_by_feature(feature3)
         # Test if the target TimeSeriesData keeps its original value

@@ -58,6 +58,7 @@ class GMDataLoader:
             # pyre-fixme[4]: Attribute must be annotated.
             self.test_lengths = test_lengths
         else:
+            # pyrefly: ignore [bad-assignment]
             self.test_lengths = None
         # pyre-fixme[4]: Attribute must be annotated.
         self.keys = keys
@@ -168,6 +169,7 @@ class GMDataLoader:
         self._idx += 1
         if batch_size == self._batch_size:  # same batch_size as the previous query
             if self._idx < self._batch_num:
+                # pyrefly: ignore [unsupported-operation]
                 return list(self._batch_ids[self._idx])
             elif self._idx == self._batch_num and (self._last_batch is not None):
                 return list(self._last_batch)
@@ -272,6 +274,7 @@ class GMBatch:
             # pyre-fixme[4]: Attribute must be annotated.
             self.init_seasonality = torch.tensor(init_seasonality, dtype=tdtype)
         else:
+            # pyrefly: ignore [bad-assignment]
             self.init_seasonality = None
         # pyre-fixme[4]: Attribute must be annotated.
         self.offset = torch.tensor(offset, dtype=tdtype).view(-1, 1)
@@ -556,6 +559,7 @@ class GMBatch:
                 if valid_length < reduced_valid_length:
                     tmp_valid_x[:valid_length] = valid_val
                     pad_length = reduced_valid_length - valid_length
+                    # pyrefly: ignore [unbound-name]
                     valid_time.append(
                         np.concatenate(
                             [
@@ -570,13 +574,17 @@ class GMBatch:
                     )
                 else:
                     tmp_valid_x = valid_val[:reduced_valid_length]
+                    # pyrefly: ignore [unbound-name]
                     valid_time.append(valid_timestamp[:reduced_valid_length])
+                # pyrefly: ignore [unbound-name]
                 valid_x.append(tmp_valid_x)
 
             elif (
                 not self.training
             ):  # prepare testing data for testing mode when valid is None
+                # pyrefly: ignore [unbound-name]
                 valid_x.append(np.full(reduced_valid_length, np.nan))
+                # pyrefly: ignore [unbound-name]
                 valid_time.append(
                     pd.date_range(
                         train_timestamp[-1] + freq,
@@ -590,7 +598,9 @@ class GMBatch:
         offset = np.array(offset)
 
         if valid is not None or not self.training:
+            # pyrefly: ignore [unbound-name]
             valid_x = np.vstack(valid_x)
+            # pyrefly: ignore [unbound-name]
             valid_time = np.vstack(valid_time)
         else:
             valid_x = None
@@ -632,6 +642,7 @@ class GMBatch:
             A :class:`torch.Tensor` object representing the feature tensor.
         """
 
+        # pyrefly: ignore [missing-attribute]
         features = self.gmfeature.get_on_the_fly_features(
             self.x_array[:, start_idx:end_idx], self.time[:, start_idx:end_idx]
         )

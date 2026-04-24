@@ -24,6 +24,7 @@ from sklearn.datasets import make_spd_matrix
 class RobustStatTest(TestCase):
     def setUp(self) -> None:
         self.random_seed = 10
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(self.random_seed)
         self.dates = pd.Series(pd.date_range("2019-01-01", "2019-03-01"))
 

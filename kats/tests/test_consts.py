@@ -854,6 +854,7 @@ class TimeSeriesDataInitTest(TimeSeriesBaseTest):
     # Testing Data interpolate with base
     def test_interpolate_base(self) -> None:
         # create time series with missing data
+        # pyrefly: ignore [bad-argument-type]
         np.random.seed(0)
         x = np.random.normal(0.5, 3, 998)
         time_val0 = list(
@@ -1052,12 +1053,14 @@ class TimeSeriesDataInitTest(TimeSeriesBaseTest):
         self.assertEqual(ts_local.is_timezone_aware(), False)
         ts_local.set_timezone(tz="US/Pacific")
         self.assertEqual(ts_local.is_timezone_aware(), True)
+        # pyrefly: ignore [missing-attribute]
         self.assertEqual(str(pd.DatetimeIndex(ts_local.time).tzinfo), "US/Pacific")
 
         ts_local = self.tsd_dst_ambiguous
         self.assertEqual(ts_local.is_timezone_aware(), False)
         ts_local.set_timezone(tz="US/Eastern", tz_ambiguous="infer", sort_by_time=True)
         self.assertEqual(ts_local.is_timezone_aware(), True)
+        # pyrefly: ignore [missing-attribute]
         self.assertEqual(str(pd.DatetimeIndex(ts_local.time).tzinfo), "US/Eastern")
 
         ts_local = self.tsd_dst_nonexistent
@@ -1066,6 +1069,7 @@ class TimeSeriesDataInitTest(TimeSeriesBaseTest):
             tz="US/Pacific", tz_nonexistent="shift_forward", sort_by_time=True
         )
         self.assertEqual(ts_local.is_timezone_aware(), True)
+        # pyrefly: ignore [missing-attribute]
         self.assertEqual(str(pd.DatetimeIndex(ts_local.time).tzinfo), "US/Pacific")
 
     def test_convert_timezone(self) -> None:
@@ -1073,11 +1077,14 @@ class TimeSeriesDataInitTest(TimeSeriesBaseTest):
         # pyre-fixme[16]: `DatetimeIndex` has no attribute `tzinfo`.
         self.assertEqual(str(pd.DatetimeIndex(ts_local.time).tzinfo), "US/Pacific")
         ts_local.convert_timezone(tz="US/Eastern")
+        # pyrefly: ignore [missing-attribute]
         self.assertEqual(str(pd.DatetimeIndex(ts_local.time).tzinfo), "US/Eastern")
 
         ts_local = self.ts_multi_PST_tz
+        # pyrefly: ignore [missing-attribute]
         self.assertEqual(str(pd.DatetimeIndex(ts_local.time).tzinfo), "US/Pacific")
         ts_local.convert_timezone(tz="US/Eastern")
+        # pyrefly: ignore [missing-attribute]
         self.assertEqual(str(pd.DatetimeIndex(ts_local.time).tzinfo), "US/Eastern")
 
     def test_min_max_values(self) -> None:
@@ -1723,6 +1730,7 @@ class IntervalAnomalyTest(TestCase):
 
     def test_basic_creation_without_confidence(self) -> None:
         # Setup: Create IntervalAnomaly without confidence parameter
+        # pyrefly: ignore [bad-argument-type]
         anomaly = IntervalAnomaly(self.start_time, self.end_time)
 
         # Execute & Assert: Verify basic properties are set correctly
@@ -1733,6 +1741,7 @@ class IntervalAnomalyTest(TestCase):
     def test_creation_with_valid_confidence_values(self) -> None:
         # Setup & Execute: Test each valid confidence value
         confidence = 0.5
+        # pyrefly: ignore [bad-argument-type]
         anomaly = IntervalAnomaly(self.start_time, self.end_time, confidence=confidence)
 
         # Assert: Verify confidence is stored correctly
@@ -1742,7 +1751,9 @@ class IntervalAnomalyTest(TestCase):
 
     def test_creation_with_confidence_boundary_values(self) -> None:
         # Setup & Execute: Test boundary values 0.0 and 1.0
+        # pyrefly: ignore [bad-argument-type]
         anomaly_zero = IntervalAnomaly(self.start_time, self.end_time, confidence=0.0)
+        # pyrefly: ignore [bad-argument-type]
         anomaly_one = IntervalAnomaly(self.start_time, self.end_time, confidence=1.0)
 
         # Assert: Verify boundary values are accepted
@@ -1753,6 +1764,7 @@ class IntervalAnomalyTest(TestCase):
         # Setup & Execute: Test invalid negative confidence value raises ValueError
         confidence = -0.1
         with self.assertRaises(ValueError) as context:
+            # pyrefly: ignore [bad-argument-type]
             IntervalAnomaly(self.start_time, self.end_time, confidence=confidence)
 
         # Assert: Check error message is correct
@@ -1764,6 +1776,7 @@ class IntervalAnomalyTest(TestCase):
         # Setup & Execute: Test invalid confidence value above 1.0 raises ValueError
         confidence = 1.1
         with self.assertRaises(ValueError) as context:
+            # pyrefly: ignore [bad-argument-type]
             IntervalAnomaly(self.start_time, self.end_time, confidence=confidence)
 
         # Assert: Check error message is correct
@@ -1782,6 +1795,7 @@ class IntervalAnomalyTest(TestCase):
             with self.subTest(start=start, end=end):
                 # Execute & Assert: Creating anomaly with invalid time range should raise ValueError
                 with self.assertRaises(ValueError) as context:
+                    # pyrefly: ignore [bad-argument-type]
                     IntervalAnomaly(start, end)
 
                 # Assert: Check error message is correct
@@ -1792,6 +1806,7 @@ class IntervalAnomalyTest(TestCase):
 
     def test_str_without_confidence(self) -> None:
         # Setup: Create IntervalAnomaly without confidence
+        # pyrefly: ignore [bad-argument-type]
         anomaly = IntervalAnomaly(self.start_time, self.end_time)
 
         # Execute: Get string representation
@@ -1804,6 +1819,7 @@ class IntervalAnomalyTest(TestCase):
     def test_str_with_confidence(self) -> None:
         # Setup: Create IntervalAnomaly with confidence
         confidence = 0.8
+        # pyrefly: ignore [bad-argument-type]
         anomaly = IntervalAnomaly(self.start_time, self.end_time, confidence=confidence)
 
         # Execute: Get string representation
@@ -1815,9 +1831,14 @@ class IntervalAnomalyTest(TestCase):
 
     def test_repr(self) -> None:
         # Setup: Create IntervalAnomaly with and without confidence
+        # pyrefly: ignore [bad-argument-type]
         anomaly_no_conf = IntervalAnomaly(self.start_time, self.end_time)
         anomaly_with_conf = IntervalAnomaly(
-            self.start_time, self.end_time, confidence=0.9
+            # pyrefly: ignore [bad-argument-type]
+            self.start_time,
+            # pyrefly: ignore [bad-argument-type]
+            self.end_time,
+            confidence=0.9,
         )
 
         # Execute: Get repr representation

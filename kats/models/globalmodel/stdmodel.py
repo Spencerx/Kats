@@ -121,6 +121,7 @@ class STDGlobalModel:
         }:
             try:
                 assert isinstance(self.params, GMParam)
+                # pyrefly: ignore [bad-argument-type]
                 period = freq_to_period(self.params.freq)
             except Exception as e:
                 logging.warning(
@@ -264,11 +265,15 @@ class STDGlobalModel:
         if self.multi:
             pool = Pool(self.max_core)
             prepared_TSs = pool.starmap(
-                self._prepare_ts, [(key, test_TSs[key], steps) for key in keys]
+                # pyrefly: ignore [bad-index]
+                self._prepare_ts,
+                # pyrefly: ignore [bad-index]
+                [(key, test_TSs[key], steps) for key in keys],
             )
             pool.close()
             pool.join()
         else:
+            # pyrefly: ignore [bad-index]
             prepared_TSs = [self._prepare_ts(key, test_TSs[key], steps) for key in keys]
         logging.info(
             f"Successfully preparing all timeseries with time = {time.time() - t0}"

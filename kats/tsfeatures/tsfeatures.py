@@ -534,10 +534,12 @@ class TsFeatures:
         if len(x.value.shape) == 1:
             to_remove = []
             for feature in ts_features:
+                # pyrefly: ignore [bad-index]
                 if not self.final_filter[feature]:
                     to_remove.append(feature)
 
             for r in to_remove:
+                # pyrefly: ignore [unsupported-operation]
                 del ts_features[r]
         else:
             for ts_feature_dict in ts_features:
@@ -547,6 +549,7 @@ class TsFeatures:
                         to_remove.append(feature)
 
                 for r in to_remove:
+                    # pyrefly: ignore [unsupported-operation]
                     del ts_feature_dict[r]
 
         return ts_features
@@ -2228,11 +2231,14 @@ class TsFourierFeatures:
         self, data: Union[TimeSeriesData, pd.Series], raw: bool = False
     ) -> Union[npt.NDArray, pd.DataFrame]:
         if isinstance(data, TimeSeriesData):
+            # pyrefly: ignore [bad-assignment]
             data = np.array(data.time.astype("int") // 10**9)
         else:
             try:
+                # pyrefly: ignore [bad-assignment]
                 data = np.array(data.astype("int") // 10**9)
             except Exception:
+                # pyrefly: ignore [bad-assignment]
                 data = np.array(pd.to_datetime(data).dt // 10**9)
         data = data / self.offset
         raw_data = self._compute_fourier_order(

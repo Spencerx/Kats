@@ -163,6 +163,7 @@ class FeatureEngineeringTest(TestCase):
             "dst": 0.0,
             "utcoffset": -28800.0,
         }
+        # pyrefly: ignore [bad-argument-type]
         result = fe.timestamp_datetime_features(t)
         self.assertDictAlmostEqual(expected, result)
 
@@ -193,6 +194,7 @@ class FeatureEngineeringTest(TestCase):
             "dst": np.nan,
             "utcoffset": np.nan,
         }
+        # pyrefly: ignore [bad-argument-type]
         result = fe.timestamp_datetime_features(t)
         self.assertDictAlmostEqual(expected, result)
 

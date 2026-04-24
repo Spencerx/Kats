@@ -21,6 +21,7 @@ def _gmmodel_nn_to_dict(gm: GMModel) -> Dict[str, Any]:
     if gm.params.model_type == "rnn":
         ans["decoder"] = None
         ans["encoder"] = None
+        # pyrefly: ignore [missing-attribute]
         state_dict = gm.rnn.state_dict()
         ans["rnn"] = {t: state_dict[t].numpy().tolist() for t in state_dict}
     else:
@@ -37,6 +38,7 @@ def _dict_to_gmmodel_nn(gmparam: GMParam, nn_dict: Dict[str, Any]) -> GMModel:
 
     if gmparam.model_type == "rnn":
         state_dict = {t: Tensor(nn_dict["rnn"][t]) for t in nn_dict["rnn"]}
+        # pyrefly: ignore [missing-attribute]
         gm.rnn.load_state_dict(state_dict)
     else:
         for name in ["decoder", "encoder"]:
